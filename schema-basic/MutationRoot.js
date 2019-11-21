@@ -7,8 +7,10 @@ import {
 } from 'graphql';
 
 
-import knex from './database';
-import User from './User';
+
+import User from './queries/User';
+import AddUser from './mutations/AddUser';
+// import UpdateUser from './mutations/UpdateUser';
 
 export default new GraphQLObjectType({
   name: 'AddUser',
@@ -16,33 +18,14 @@ export default new GraphQLObjectType({
     user: {
       type: User,
       args: {
-        ID: { type: GraphQLInt },
         userName: { type: GraphQLString },
         hash: { type: GraphQLString },
         firstName: { type: GraphQLString },
-        lastName: { type: GraphQLString }
+        lastName: { type: GraphQLString },
+        role: { type: GraphQLInt }
       },
-      resolve: async (parent, args, context, resolveInfo) => {
-        try {
-          return (
-            await knex(`USERTABLE`).insert(
-              {
-                ID: args.ID,
-                userName: args.userName,
-                hash: args.hash,
-                firstName: args.firstName,
-                lastName: args.lastName,
-                createdAt: Date.now(),
-                modifiedAt: Date.now()
-              }
-            )
-          )
-        }
-        catch (err) {
-          console.log(err)
-          throw new Error('Failed to insert new User');
-        }
+      resolve: async (parent, args, context, resolveInfo) => { 
+        await AddUser(args,context)}
       },
-    },
-  }),
-});
+    })
+  });

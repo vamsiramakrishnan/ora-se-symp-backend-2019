@@ -46,9 +46,11 @@
     "koa-graphql": "^0.6.2",
     "koa-router": "^7.1.1",
     "koa-static": "^3.0.0",
+    "moment": "^2.24.0",
     "oracledb": "^4.0.1",
     "restify": "^8.4.0",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.3"

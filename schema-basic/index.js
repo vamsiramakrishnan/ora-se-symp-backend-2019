@@ -3,7 +3,7 @@ import QueryRoot from './QueryRoot';
 import MutationRoot from './MutationRoot';
 
 export default new GraphQLSchema({
-  description: 'a test schema',
+  description: 'Schema for SE Sympoisum Users',
   query: QueryRoot,
   mutation: MutationRoot,
 });

@@ -7,12 +7,12 @@ import {
 } from 'graphql';
 
 import joinMonster from 'join-monster';
-import knex from './database';
-import dbCall from '../data/fetch';
-import User from './User';
-import Comment from './Comment';
-import Post from './Post';
-import Event from './Event';
+import knex from './helpers/database';
+import dbCall from './helpers/fetch';
+import User from './queries/User';
+import Comment from './queries/Comment';
+import Post from './queries/Post';
+import Event from './queries/Event';
 
 export default new GraphQLObjectType({
   description: 'Global Query Object',

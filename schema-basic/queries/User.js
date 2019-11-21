@@ -8,7 +8,6 @@ import {
 import Post from './Post';
 import Comment from './Comment';
 import Event from './Event';
-import config from '../config.json';
 
 const User = new GraphQLObjectType({
   description: 'An SE Symposium User',
