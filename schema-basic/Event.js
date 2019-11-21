@@ -12,7 +12,7 @@ import {
     description: 'Events in SE Symposium',
     name: 'Event',
     // another table in SQL to map to
-    sqlTable: '"ADMIN"."eventsTable"',
+    sqlTable: 'EVENTSTABLE',
     uniqueKey: 'ID',
     fields: () => ({
       ID: {
@@ -20,40 +20,28 @@ import {
         type: GraphQLInt,
       },
       eventName: {
-        sqlColumn: 'eventName',
+        sqlColumn: 'EVENTNAME',
         description: 'The Event Description',
         // assumed to be "body"
         type: GraphQLString,
       },
       eventMetadata: {
-        sqlColumn: 'eventMetadata',
+        sqlColumn: 'EVENTMETADATA',
         description: 'Further Event Details',
         // assumed to be "body"
         type: GraphQLString,
       },
-      attendees: {
-        description: 'Event Attendees',
-        // a back reference to its User
-        type: User,
-        // this is a one-to-one
-        sqlJoin: (postTable, userTable) =>
-          `${postTable}."authorID" = ${userTable}."ID"`,
-      },
-      authorId: {
-        type: GraphQLInt,
-        sqlColumn: 'authorID',
-      },
       eventAttendees: {
-        description: 'Users that this user is following',
+        description: 'Attendees that are attending event',
         type: new GraphQLList(User),
         // many-to-many is supported too, via an intermediate join table
         junction: {
-          sqlTable: `"ADMIN"."eventRegistrationTable"`,
+          sqlTable: 'EVENTREGISTRATIONTABLE',
           sqlJoins: [
             (eventTable, registrationTable) =>
-              `${eventTable}."ID" = ${registrationTable}."eventID"`,
+              `${eventTable}.ID = ${registrationTable}.EVENTID`,
             (registrationTable, userTable) =>
-              `${registrationTable}."registereeID" = ${userTable}."ID"`,
+              `${registrationTable}.REGISTEREEID = ${userTable}.ID`,
           ],
         },
       },
@@ -62,7 +50,7 @@ import {
         type: GraphQLInt,
         // use a correlated subquery in a raw SQL expression to do things like aggregation
         sqlExpr: eventTable =>
-          `(SELECT COUNT(*) FROM "ADMIN"."eventRegistrationTable" WHERE "eventID" = ${eventTable}."ID")`,
+          `(SELECT COUNT(*) FROM EVENTREGISTRATIONTABLE WHERE EVENTID = ${eventTable}.ID)`,
       },
     }),
   });

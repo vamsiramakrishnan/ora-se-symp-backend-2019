@@ -7,12 +7,14 @@ import {
 
 import Post from './Post';
 import Comment from './Comment';
+import Event from './Event';
+import config from '../config.json';
 
 const User = new GraphQLObjectType({
   description: 'An SE Symposium User',
   name: 'User',
   // tell join monster the expression for the table
-  sqlTable: `"ADMIN"."userTable"`,
+  sqlTable: 'USERTABLE',
   // one of the columns must be unique for deduplication purposes
   uniqueKey: 'ID',
   fields: () => ({
@@ -23,51 +25,51 @@ const User = new GraphQLObjectType({
     userName: {
       type: GraphQLString,
       // specify the SQL column
-      sqlColumn: 'userName',
+      sqlColumn: 'USERNAME',
     },
     hash: {
       type: GraphQLString,
       // specify the SQL column
-      sqlColumn: 'hash',
+      sqlColumn: 'HASH',
     },
     firstName: {
       type: GraphQLString,
       // specify the SQL column
-      sqlColumn: 'firstName',
+      sqlColumn: 'FIRSTNAME',
     },
     lastName: {
       type: GraphQLString,
-      sqlColumn: 'lastName',
+      sqlColumn: 'LASTNAME',
     },
     userMetadata: {
       type: GraphQLString,
-      sqlColumn: 'userMetadata',
+      sqlColumn: 'USERMETADATA',
     },
     userLocation: {
       type: GraphQLString,
-      sqlColumn: 'userMetadata"."location'
+      sqlColumn: 'USERMETADATA.LOCATION'
     },
     userDepartment: {
       type: GraphQLString,
-      sqlColumn: 'userMetadata"."Department'
+      sqlColumn: 'USERMETADATA.DEPARTMENT'
     },
     userRoom: {
       type: GraphQLString,
-      sqlColumn: 'userMetadata"."Room'
+      sqlColumn: 'USERMETADATA.ROOM'
     },
     createdAt: {
       type: GraphQLString,
-      sqlColumn: 'createdAt',
+      sqlColumn: 'CREATEDAT',
     },
     modifiedAt: {
       type: GraphQLString,
-      sqlColumn: 'modifiedAt',
+      sqlColumn: 'MODIFIEDAT',
     },
     fullName: {
       description: "A user's first and last name",
       type: GraphQLString,
       // depends on multiple SQL columns
-      sqlDeps: ['firstName', 'lastName'],
+      sqlDeps: ['FIRSTNAME', 'LASTNAME'],
       resolve: user => `${user.firstName} ${user.lastName}`,
     },
     posts: {
@@ -75,10 +77,10 @@ const User = new GraphQLObjectType({
       // has another GraphQLObjectType as a field
       type: new GraphQLList(Post), 
       sqlJoin: (userTable, postTable) =>
-        `${userTable}.ID = ${postTable}."authorID"`,
-      where: table => `${table}."isDeleted" = 'N'`,
+        `${userTable}.ID = ${postTable}.AUTHORID`,
+      where: table => `${table}.ISDELETED = 'N'`,
       orderBy: {
-        createdAt: 'DESC',
+        CREATEDAT: 'DESC',
       },  
     },
     comments: {
@@ -87,10 +89,10 @@ const User = new GraphQLObjectType({
       // only JOIN comments that are not archived
       type: new GraphQLList(Comment),
       sqlJoin: (userTable, commentTable) =>
-        `${userTable}.ID = ${commentTable}."authorID"`,
-      where: table => `${table}."isDeleted" = 'N' `,
+        `${userTable}.ID = ${commentTable}.AUTHORID`,
+      where: table => `${table}.ISDELETED = 'N' `,
       orderBy: {
-        modifiedAt: 'DESC',
+        MODIFIEDAT: 'DESC',
       },
     },
     following: {
@@ -98,12 +100,12 @@ const User = new GraphQLObjectType({
       type: new GraphQLList(User),
       // many-to-many is supported too, via an intermediate join table
       junction: {
-        sqlTable: `"ADMIN"."networkingTable"`,
+        sqlTable: "NETWORKINGTABLE",
         sqlJoins: [
           (followerTable, relationTable) =>
-            `${followerTable}."ID" = ${relationTable}."requestorID"`,
+            `${followerTable}.ID = ${relationTable}.REQUESTORID`,
           (relationTable, followeeTable) =>
-            `${relationTable}."acceptorID" = ${followeeTable}."ID"`,
+            `${relationTable}.ACCEPTORID = ${followeeTable}.ID`,
         ],
       },
     },
@@ -112,27 +114,42 @@ const User = new GraphQLObjectType({
       type: new GraphQLList(User),
       // many-to-many is supported too, via an intermediate join table
       junction: {
-        sqlTable: `"ADMIN"."networkingTable"`,
+        sqlTable: 'NETWORKINGTABLE',
         sqlJoins: [
           (followeeTable, relationTable) =>
-            `${followeeTable}."ID" = ${relationTable}."acceptorID"`,
+            `${followeeTable}.ID = ${relationTable}.ACCEPTORID`,
           (relationTable, followerTable) =>
-            `${relationTable}."requestorID" = ${followerTable}."ID"`,
+            `${relationTable}.REQUESTORID = ${followerTable}.ID`,
         ],
       },
     },
-    
+    events: {
+      description: 'List of Events that the user is attending',
+      // another one-to-many relation
+      // only JOIN comments that are not archived
+      type: new GraphQLList(Event),
+      junction: {
+        sqlTable: 'EVENTREGISTRATIONTABLE',
+        sqlJoins: [
+          (userTable, registrationTable) =>
+            `${userTable}.ID = ${registrationTable}.REGISTEREEID`,
+          (registrationTable, eventTable) =>
+            `${registrationTable}.EVENTID = ${eventTable}.ID`,
+        ],
+      },
+    },
+
     numPosts: {
       description: 'Number of Comments the user has Written on Posts',
       type: GraphQLInt,
       sqlExpr: userTable =>
-        `(SELECT COUNT(*) FROM "ADMIN"."postTable" WHERE "authorID" = ${userTable}."ID" AND "isDeleted" = 'N')`,
+        `(SELECT COUNT(*) FROM POSTTABLE WHERE AUTHORID = ${userTable}.ID AND ISDELETED = 'N')`,
     },
     numComments: {
       description: 'Number of Comments the user has Written on Posts',
       type: GraphQLInt,
       sqlExpr: userTable =>
-        `(SELECT COUNT(*) FROM "ADMIN"."commentsTable" WHERE "authorID" = ${userTable}."ID" AND "isDeleted" = 'N')`,
+        `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE AUTHORID = ${userTable}.ID AND ISDELETED = 'N')`,
     },
   }),
 });

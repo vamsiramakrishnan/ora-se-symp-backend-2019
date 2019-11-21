@@ -11,7 +11,7 @@ export default new GraphQLObjectType({
   description: 'Networking Table',
   name: 'NetworkingTable',
   // another SQL table to map to
-  sqlTable: '"ADMIN"."networkingTable"',
+  sqlTable: 'NETWORKINGTABLE',
   uniqueKey: 'ID',
   fields: () => ({
     ID: {
@@ -31,7 +31,7 @@ export default new GraphQLObjectType({
     },
     createdAt: {
       type: GraphQLString,
-      sqlColumn: 'createdAt',
+      sqlColumn: 'CREATEDAT',
     },
   }),
 });

@@ -5,8 +5,14 @@ export default require('knex')({
   client: 'oracledb',
   connection: {
     connectString: 'sesymp2019_high',
-    user: 'admin',
-    password: 'Smavikir@4390!',
+    user: 'sesym',
+    password: 'Oracle12345#',
   },
   useNullAsDefault: true,
-});
+  pool: {
+    min: 0,
+    max: 7
+  }
+  });
+
+

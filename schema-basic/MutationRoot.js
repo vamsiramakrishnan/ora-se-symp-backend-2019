@@ -6,7 +6,7 @@ import {
   GraphQLInt,
 } from 'graphql';
 
-import joinMonster from 'join-monster';
+
 import knex from './database';
 import User from './User';
 
@@ -16,31 +16,30 @@ export default new GraphQLObjectType({
     user: {
       type: User,
       args: {
-        ID: {type:GraphQLInt},
-        userName: {type: GraphQLString},
-        hash: {type: GraphQLString},
-        firstName: {type: GraphQLString},
-        lastName: {type: GraphQLString},
-        userMetadata: {type: GraphQLString},
-        createdAt: {type: GraphQLString},
-        modifiedAt: {type: GraphQLString}
+        ID: { type: GraphQLInt },
+        userName: { type: GraphQLString },
+        hash: { type: GraphQLString },
+        firstName: { type: GraphQLString },
+        lastName: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
         try {
           return (
-            await knex("userTable").insert(
-              {'ID':args.ID,
-              'userName': args.userName,
-              'hash': args.hash,
-              'firstName': args.firstName,
-              'lastName': args.lastName,
-              'userMetadata': args.userMetadata,
-              'createdAt': args.createdAt,
-              'modifiedAt': args.modifiedAt}
-              )
+            await knex(`USERTABLE`).insert(
+              {
+                ID: args.ID,
+                userName: args.userName,
+                hash: args.hash,
+                firstName: args.firstName,
+                lastName: args.lastName,
+                createdAt: Date.now(),
+                modifiedAt: Date.now()
+              }
             )
-          } 
-          catch (err) {
+          )
+        }
+        catch (err) {
+          console.log(err)
           throw new Error('Failed to insert new User');
         }
       },

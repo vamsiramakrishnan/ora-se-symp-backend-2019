@@ -13,7 +13,7 @@ export default new GraphQLObjectType({
   description: 'A post from a user',
   name: 'Post',
   // another table in SQL to map to
-  sqlTable: '"ADMIN"."postTable"',
+  sqlTable: 'POSTTABLE',
   uniqueKey: 'ID',
   fields: () => ({
     ID: {
@@ -21,25 +21,25 @@ export default new GraphQLObjectType({
       type: GraphQLInt,
     },
     postContent: {
-      sqlColumn: 'postMetadata"."postContent',
+      sqlColumn: 'POSTMETADATA.POSTCONTENT',
       description: 'The content of the post',
       // assumed to be "body"
       type: GraphQLString,
     },
     postVersion: {
-      sqlColumn: 'postMetadata"."postVersion',
+      sqlColumn: 'POSTMETADATA.POSTVERSION',
       description: 'The current version of the Post',
       // assumed to be "body"
       type: GraphQLString,
     },
     postHashtags: {
-      sqlColumn: 'postMetadata"."postHashtags',
+      sqlColumn: 'POSTMETADATA.POSTHASHTAGS',
       description: 'Hashtags in the Post',
       // assumed to be "body"
       type: GraphQLString,
     },
     postImages: {
-      sqlColumn: 'postMetadata"."postImages',
+      sqlColumn: 'POSTMETADATA.POSTIMAGES',
       description: 'Images in the Post',
       // assumed to be "body"
       type: GraphQLString,
@@ -50,40 +50,41 @@ export default new GraphQLObjectType({
       type: User,
       // this is a one-to-one
       sqlJoin: (postTable, userTable) =>
-        `${postTable}."authorID" = ${userTable}."ID"`,
+        `${postTable}.AUTHORID = ${userTable}.ID`,
     },
     authorId: {
       type: GraphQLInt,
-      sqlColumn: 'authorID',
+      sqlColumn: 'AUTHORID',
     },
     comments: {
       description: 'The comments on this post',
       type: new GraphQLList(Comment),
       sqlBatch: {
         // which column to match up to the users
-        thisKey: 'postID',
+        thisKey: 'POSTID',
         // the other column to compare to
         parentKey: 'ID',
       },
-      where: commentsTable => `${commentsTable}."isDeleted" = 'N'`,
+      where: commentsTable => `${commentsTable}.ISDELETED = 'N'`,
     },
     numComments: {
       description: 'The number of comments on this post',
       type: GraphQLInt,
       // use a correlated subquery in a raw SQL expression to do things like aggregation
       sqlExpr: postTable =>
-        `(SELECT COUNT(*) FROM "ADMIN"."commentsTable" WHERE "postID" = ${postTable}."ID" AND "isDeleted" = 'N')`,
+        `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`,
     },
     isDeleted: {
       type: GraphQLBoolean,
+      sqlColumn: 'ISDELETED'
     },
     createdAt: {
       type: GraphQLString,
-      sqlColumn: 'createdAt',
+      sqlColumn: 'CREATEDAT',
     },
     modifiedAt: {
       type: GraphQLString,
-      sqlColumn: 'modifiedAt',
+      sqlColumn: 'MODIFIEDAT',
     },
   }),
 });
