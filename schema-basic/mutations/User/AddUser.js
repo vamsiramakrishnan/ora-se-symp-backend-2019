@@ -1,8 +1,8 @@
 
 import uuid from 'uuid'
 import moment from 'moment';
-import dbCall from '../helpers/fetch';
-import knex from '../helpers/database'
+import dbCall from '../../helpers/fetch';
+import knex from '../../helpers/database'
 
 export default async function AddUser(args,context) {
     return await dbCall(

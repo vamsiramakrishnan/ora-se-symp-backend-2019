@@ -4,6 +4,7 @@ import {
   GraphQLString,
   GraphQLInt,
 } from 'graphql';
+import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 import Post from './Post';
 import Comment from './Comment';
@@ -26,11 +27,6 @@ const User = new GraphQLObjectType({
       // specify the SQL column
       sqlColumn: 'USERNAME',
     },
-    hash: {
-      type: GraphQLString,
-      // specify the SQL column
-      sqlColumn: 'HASH',
-    },
     firstName: {
       type: GraphQLString,
       // specify the SQL column
@@ -41,7 +37,7 @@ const User = new GraphQLObjectType({
       sqlColumn: 'LASTNAME',
     },
     userMetadata: {
-      type: GraphQLString,
+      type: GraphQLJSON,
       sqlColumn: 'USERMETADATA',
     },
     userLocation: {

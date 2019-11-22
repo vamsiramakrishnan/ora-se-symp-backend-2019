@@ -1,0 +1,10 @@
+mutation{
+    user(userName: "muhahah",
+        hash: "5689",
+        firstName: "hahahamu",
+        lastName: "blabla"){
+    userName,
+    firstName,
+    lastName,
+  }
+    }	

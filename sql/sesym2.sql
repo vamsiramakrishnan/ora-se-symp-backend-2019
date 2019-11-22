@@ -28,6 +28,10 @@ ALTER TABLE userTable
     ADD UNIQUE ( userName ) 
     USING INDEX userTable_IDX;
 
+ALTER TABLE userTable 
+    ADD CONSTRAINT isJSON 
+    CHECK ( userMetadata IS JSON);
+
 /*CheckInTable*/
 
 CREATE TABLE checkInTable 
@@ -113,6 +117,7 @@ CREATE TABLE commentsTable
 ALTER TABLE commentsTable 
     ADD CONSTRAINT ISJSON1 
     CHECK ( commentMetadata IS JSON);
+
 ALTER TABLE commentsTable 
     ADD 
     CHECK ( isDeleted IN ('N','Y'));
@@ -161,6 +166,9 @@ CREATE TABLE eventsTable
      eventMetadata VARCHAR2 (4000)  NOT NULL 
     );
 
+ALTER TABLE eventsTable 
+    ADD CONSTRAINT isJSON 
+    CHECK ( eventMetadata IS JSON);
 
 CREATE UNIQUE INDEX EVENTSTABLE_PK ON eventsTable 
     ( 
@@ -230,13 +238,16 @@ ALTER TABLE eventAttendanceTable
 
 CREATE TABLE eventFeedBackTable 
     ( 
-     ID                 VARCHAR2 (255) , 
+     ID               VARCHAR2 (255) , 
      eventID          VARCHAR2 (255)  NOT NULL , 
      feedBackUserID   VARCHAR2 (255)  NOT NULL , 
      feedBackMetadata VARCHAR2 (4000)  NOT NULL , 
      createdAt        TIMESTAMP  NOT NULL 
     );
 
+ALTER TABLE eventFeedBackTable 
+    ADD CONSTRAINT isJSON 
+    CHECK ( eventFeedBackTable IS JSON);
 
 CREATE UNIQUE INDEX EVENTFEEDBACKTABLE_PK ON eventFeedBackTable 
     ( 
