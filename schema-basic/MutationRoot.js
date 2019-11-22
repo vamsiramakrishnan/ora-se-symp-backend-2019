@@ -15,12 +15,17 @@ import u_AddUser from './mutations/User/AddUser';
 import u_UdpatePassword from './mutations/User/UpdatePassword';
 import u_UpdateMetadata from './mutations/User/UpdateMetadata';
 
-
+import Post from './queries/Post';
 import p_AddPost from './mutations/Post/AddPost';
 import p_UdpateMetadata from './mutations/Post/UpdateMetadata';
 import p_DeletePost from './mutations/Post/DeletePost';
 
-import Post from './queries/Post';
+import Comment from './queries/Comment';
+import c_AddComment from './mutations/Comments/AddComment';
+import c_UpdateMetadata from './mutations/Comments/AddComment';
+import c_DeleteComment from './mutations/Comments/DeleteComment';
+
+
 
 
 export default new GraphQLObjectType({
@@ -75,7 +80,6 @@ export default new GraphQLObjectType({
       type: Post,
       args: {
         ID: { type: GraphQLString },
-        authorID: { type: GraphQLString },
         postMetadata: { type: GraphQLJSON },
       },
       resolve: async (parent, args, context, resolveInfo) => {
@@ -90,6 +94,36 @@ export default new GraphQLObjectType({
       resolve: async (parent, args, context, resolveInfo) => {
         await p_DeletePost(args, context)
       }
-    }
+    },
+    AddComment: {
+      type: Comment,
+      args: {
+        authorID: { type: GraphQLString },
+        postID: {type: GraphQLString},
+        commentMetadata: { type: GraphQLJSON },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        await c_AddComment(args, context)
+      }
+    },
+    UpdateComment: {
+      type: Comment,
+      args: {
+        ID: { type: GraphQLString },
+        commentMetadata: { type: GraphQLJSON },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        await c_UpdateMetadata(args, context)
+      }
+    },
+    DeleteComment: {
+      type: Comment,
+      args: {
+        ID: { type: GraphQLString },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        await c_DeleteComment(args, context)
+      }
+    },    
   })
 });
