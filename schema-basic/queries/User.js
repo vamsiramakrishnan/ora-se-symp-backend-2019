@@ -66,7 +66,7 @@ const User = new GraphQLObjectType({
       type: GraphQLString,
       // depends on multiple SQL columns
       sqlDeps: ['FIRSTNAME', 'LASTNAME'],
-      resolve: user => `${user.firstName} ${user.lastName}`,
+      resolve: user => `${user.FIRSTNAME} ${user.LASTNAME}`,
     },
     posts: {
       description: 'A list of Posts the user has written',
