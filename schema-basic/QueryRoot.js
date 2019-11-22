@@ -41,7 +41,7 @@ export default new GraphQLObjectType({
       // this function generates the WHERE condition
       where: (usersTable, args, context) => {
         // eslint-disable-line no-unused-vars
-        return `${usersTable}.ID = ${args.id}`;
+        return `${usersTable}.ID = '${args.id}'`;
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
@@ -66,7 +66,7 @@ export default new GraphQLObjectType({
         },
       },
       where: (commentsTable, args, context) => {
-        return `${commentsTable}.ID = ${args.id}`;
+        return `${commentsTable}.ID = '${args.id}'`;
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
@@ -91,7 +91,7 @@ export default new GraphQLObjectType({
         },
       },
       where: (postTable, args, context) => {
-        return `${postTable}.ID = ${args.id}`;
+        return `${postTable}.ID = '${args.id}'`;
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
@@ -108,7 +108,7 @@ export default new GraphQLObjectType({
         },
       },
       where: (eventsTable, args, context) => {
-        return `${eventsTable}.ID = ${args.id}`;
+        return `${eventsTable}.ID = '${args.id}'`;
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>

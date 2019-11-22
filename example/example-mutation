@@ -8,3 +8,7 @@ mutation{
     lastName,
   }
     }	
+
+
+sudo sh -c "echo /usr/lib/oracle/19.3/client64/lib > /etc/ld.so.conf.d/oracle-instantclient.conf"
+export LD_LIBRARY_PATH=/usr/lib/oracle/19.3:$LD_LIBRARY_PATH

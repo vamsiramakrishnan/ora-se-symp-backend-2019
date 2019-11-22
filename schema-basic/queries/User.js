@@ -21,6 +21,7 @@ const User = new GraphQLObjectType({
     ID: {
       // no `sqlColumn` and no `resolve`. assumed that the column name is the same as the field name: id
       type: GraphQLString,
+      sqlColumn:'ID'
     },
     userName: {
       type: GraphQLString,
