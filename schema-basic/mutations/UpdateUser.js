@@ -4,7 +4,7 @@ import moment from 'moment';
 import dbCall from '../helpers/fetch';
 import knex from '../helpers/database'
 
-export default async function AddUser(args,context) {
+export default async function UpdateUser(args,context) {
     return await dbCall(
         `INSERT INTO USERTABLE (ID, USERNAME, HASH, FIRSTNAME, LASTNAME, CREATEDAT, MODIFIEDAT, ROLE ) 
         VALUES ('${uuid.v1()}', 
