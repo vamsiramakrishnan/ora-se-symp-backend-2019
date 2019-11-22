@@ -4,7 +4,7 @@ import moment from 'moment';
 import dbCall from '../../helpers/fetch';
 import knex from '../../helpers/database'
 
-export default async function UpdatePassword(args,context) {
+export default async function DeletePost(args,context) {
     if (args.ID != null){
     return await dbCall(
         `UPDATE USERTABLE 

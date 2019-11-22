@@ -20,6 +20,12 @@ export default new GraphQLObjectType({
       // SQL column assumed to be "id"
       type: GraphQLInt,
     },
+    postMetadata: {
+      sqlColumn: 'POSTMETADATA',
+      description: 'The Metadata of the post',
+      // assumed to be "body"
+      type: GraphQLString,
+    },
     postContent: {
       sqlColumn: 'POSTMETADATA.POSTCONTENT',
       description: 'The content of the post',
@@ -52,7 +58,7 @@ export default new GraphQLObjectType({
       sqlJoin: (postTable, userTable) =>
         `${postTable}.AUTHORID = ${userTable}.ID`,
     },
-    authorId: {
+    authorID: {
       type: GraphQLInt,
       sqlColumn: 'AUTHORID',
     },
