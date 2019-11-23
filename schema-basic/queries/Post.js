@@ -27,25 +27,13 @@ export default new GraphQLObjectType({
       type: GraphQLString,
     },
     postContent: {
-      sqlColumn: 'POSTMETADATA.POSTCONTENT',
+      sqlColumn: `'POSTMETADATA'.'POSTCONTENT'`,
       description: 'The content of the post',
       // assumed to be "body"
       type: GraphQLString,
     },
-    postVersion: {
-      sqlColumn: 'POSTMETADATA.POSTVERSION',
-      description: 'The current version of the Post',
-      // assumed to be "body"
-      type: GraphQLString,
-    },
-    postHashtags: {
-      sqlColumn: 'POSTMETADATA.POSTHASHTAGS',
-      description: 'Hashtags in the Post',
-      // assumed to be "body"
-      type: GraphQLString,
-    },
     postImages: {
-      sqlColumn: 'POSTMETADATA.POSTIMAGES',
+      sqlColumn: `'POSTMETADATA'.'POSTIMAGES'`,
       description: 'Images in the Post',
       // assumed to be "body"
       type: GraphQLString,

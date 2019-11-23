@@ -14,6 +14,7 @@ import User from './queries/User';
 import u_AddUser from './mutations/User/AddUser';
 import u_UdpatePassword from './mutations/User/UpdatePassword';
 import u_UpdateMetadata from './mutations/User/UpdateMetadata';
+import u_SignIn from './mutations/User/SignIn';
 
 import Post from './queries/Post';
 import p_AddPost from './mutations/Post/AddPost';
@@ -41,7 +42,7 @@ export default new GraphQLObjectType({
         role: { type: GraphQLInt }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await u_AddUser(args, context)
+        return await u_AddUser(args, context);
       }
     },
     UpdateUserPassword: {
@@ -52,7 +53,7 @@ export default new GraphQLObjectType({
         hash: { type: GraphQLString },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await u_UdpatePassword(args, context)
+        return await u_UdpatePassword(args, context)
       }
     },
     UpdateUserMetadata: {
@@ -63,7 +64,19 @@ export default new GraphQLObjectType({
         userMetadata: { type: GraphQLJSON },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await u_UpdateMetadata(args, context)
+        return await u_UpdateMetadata(args, context)
+      }
+    },
+    SignIn: {
+      type: User,
+      args: {
+        userName: { type: GraphQLString },
+        hash: { type: GraphQLString },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+      var jwt = await u_SignIn(args, context)
+      console.log(jwt)
+      return jwt
       }
     },
     AddPost: {
@@ -73,7 +86,7 @@ export default new GraphQLObjectType({
         postMetadata: { type: GraphQLJSON },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await p_AddPost(args, context)
+        return await p_AddPost(args, context)
       }
     },
     UpdatePost: {
@@ -83,7 +96,7 @@ export default new GraphQLObjectType({
         postMetadata: { type: GraphQLJSON },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await p_UdpateMetadata(args, context)
+        return await p_UdpateMetadata(args, context)
       }
     },
     DeletePost: {
@@ -92,7 +105,9 @@ export default new GraphQLObjectType({
         ID: { type: GraphQLString },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await p_DeletePost(args, context)
+        const deletePostFields = await p_DeletePost(args, context)
+        console.log(deletePostFields);
+        return deletePostFields
       }
     },
     AddComment: {
@@ -103,7 +118,7 @@ export default new GraphQLObjectType({
         commentMetadata: { type: GraphQLJSON },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await c_AddComment(args, context)
+        return await c_AddComment(args, context)
       }
     },
     UpdateComment: {
@@ -113,7 +128,7 @@ export default new GraphQLObjectType({
         commentMetadata: { type: GraphQLJSON },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await c_UpdateMetadata(args, context)
+        return await c_UpdateMetadata(args, context)
       }
     },
     DeleteComment: {
@@ -122,7 +137,7 @@ export default new GraphQLObjectType({
         ID: { type: GraphQLString },
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        await c_DeleteComment(args, context)
+        return await c_DeleteComment(args, context)
       }
     },    
   })

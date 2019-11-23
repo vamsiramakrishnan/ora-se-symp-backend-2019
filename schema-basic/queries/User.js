@@ -4,6 +4,7 @@ import {
   GraphQLString,
   GraphQLInt,
 } from 'graphql';
+
 import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 import Post from './Post';
@@ -52,6 +53,10 @@ const User = new GraphQLObjectType({
     userRoom: {
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.ROOM'
+    },
+    userProfilePic: {
+      type: GraphQLString,
+      sqlColumn: 'USERMETADATA.PROFILEPIC'
     },
     createdAt: {
       type: GraphQLString,
