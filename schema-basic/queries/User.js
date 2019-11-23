@@ -46,6 +46,9 @@ const User = new GraphQLObjectType({
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.LOCATION'
     },
+    token :{
+      type: GraphQLString,
+    },
     userDepartment: {
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.DEPARTMENT'

@@ -3,82 +3,82 @@ import {
   GraphQLList,
   GraphQLString,
   GraphQLInt,
-  GraphQLBoolean,
-} from 'graphql';
+  GraphQLBoolean
+} from "graphql";
 
-import User from './User';
-import Comment from './Comment';
+import User from "./User";
+import Comment from "./Comment";
 
 export default new GraphQLObjectType({
-  description: 'A post from a user',
-  name: 'Post',
+  description: "A post from a user",
+  name: "Post",
   // another table in SQL to map to
-  sqlTable: 'POSTTABLE',
-  uniqueKey: 'ID',
+  sqlTable: "POSTTABLE",
+  uniqueKey: "ID",
   fields: () => ({
     ID: {
       // SQL column assumed to be "id"
-      type: GraphQLInt,
+      type: GraphQLString
     },
     postMetadata: {
-      sqlColumn: 'POSTMETADATA',
-      description: 'The Metadata of the post',
+      sqlColumn: "POSTMETADATA",
+      description: "The Metadata of the post",
       // assumed to be "body"
-      type: GraphQLString,
+      type: GraphQLString
     },
     postContent: {
       sqlColumn: `POSTMETADATA"."POSTCONTENT`,
-      description: 'The content of the post',
+      description: "The content of the post",
       // assumed to be "body"
-      type: GraphQLString,
+      type: GraphQLString
     },
     postImages: {
       sqlColumn: `'POSTMETADATA"."POSTIMAGES`,
-      description: 'Images in the Post',
+      description: "Images in the Post",
       // assumed to be "body"
-      type: GraphQLString,
+      type: GraphQLString
     },
     author: {
-      description: 'The user that created the post',
+      description: "The user that created the post",
       // a back reference to its User
       type: User,
       // this is a one-to-one
       sqlJoin: (postTable, userTable) =>
-        `${postTable}.AUTHORID = ${userTable}.ID`,
+        `${postTable}.AUTHORID = ${userTable}.ID`
     },
     authorID: {
       type: GraphQLInt,
-      sqlColumn: 'AUTHORID',
+      sqlColumn: "AUTHORID"
     },
     comments: {
-      description: 'The comments on this post',
+      description: "The comments on this post",
       type: new GraphQLList(Comment),
       sqlBatch: {
         // which column to match up to the users
-        thisKey: 'POSTID',
+        thisKey: "POSTID",
         // the other column to compare to
-        parentKey: 'ID',
+        parentKey: "ID"
       },
-      where: commentsTable => `${commentsTable}.ISDELETED = 'N'`,
+      where: commentsTable => `${commentsTable}.ISDELETED = 'N'`
     },
     numComments: {
-      description: 'The number of comments on this post',
+      description: "The number of comments on this post",
       type: GraphQLInt,
       // use a correlated subquery in a raw SQL expression to do things like aggregation
       sqlExpr: postTable =>
-        `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`,
+        `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`
     },
     isDeleted: {
       type: GraphQLBoolean,
-      sqlColumn: 'ISDELETED'
+      sqlColumn: "ISDELETED"
     },
     createdAt: {
       type: GraphQLString,
-      sqlColumn: 'CREATEDAT',
+      sqlColumn: "CREATEDAT"
     },
     modifiedAt: {
       type: GraphQLString,
-      sqlColumn: 'MODIFIEDAT',
-    },
-  }),
+      sqlColumn: "MODIFIEDAT"
+    }
+  })
 });
