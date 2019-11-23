@@ -18,7 +18,7 @@ import Post from "./queries/Post";
 import p_AddPost from "./mutations/Post/AddPost";
 import p_UdpateMetadata from "./mutations/Post/UpdateMetadata";
 import p_DeletePost from "./mutations/Post/DeletePost";
-import parsePost from "./parse";
+import parsePost from "./helpers/parse";
 
 import Comment from "./queries/Comment";
 import c_AddComment from "./mutations/Comments/AddComment";
