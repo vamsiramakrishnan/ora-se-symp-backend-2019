@@ -10,10 +10,11 @@ import bodyParser from 'body-parser';
 
 // Create the Express app
 const app = express();
+app.use(cors());
 app.use(
   '/graphql',
   jwt({
-    secret: 'shhhhhhared-secret',
+    secret: 'SeSyMp#2019_AmRiTsAr',
     requestProperty: 'auth',
     credentialsRequired: false
   })
