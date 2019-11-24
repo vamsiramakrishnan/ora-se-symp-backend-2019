@@ -13,17 +13,27 @@ import u_AddUser from "./mutations/User/AddUser";
 import u_UdpatePassword from "./mutations/User/UpdatePassword";
 import u_UpdateMetadata from "./mutations/User/UpdateMetadata";
 import u_SignIn from "./mutations/User/SignIn";
+import parseUser from "./parsers/parseUser";
 
 import Post from "./queries/Post";
 import p_AddPost from "./mutations/Post/AddPost";
 import p_UdpateMetadata from "./mutations/Post/UpdateMetadata";
 import p_DeletePost from "./mutations/Post/DeletePost";
-import parsePost from "./helpers/parse";
+import parsePost from "./parsers/parsePost";
 
+//
 import Comment from "./queries/Comment";
 import c_AddComment from "./mutations/Comments/AddComment";
 import c_UpdateMetadata from "./mutations/Comments/AddComment";
 import c_DeleteComment from "./mutations/Comments/DeleteComment";
+
+
+const authenticated = fn => (parent, args, context, info) => {
+  if (context && context.user) {
+    return fn(parent, args, context, info)
+  }
+  throw new Error('User is not authenticated')
+}
 
 export default new GraphQLObjectType({
   name: "Mutations",
@@ -35,10 +45,11 @@ export default new GraphQLObjectType({
         hash: { type: GraphQLString },
         firstName: { type: GraphQLString },
         lastName: { type: GraphQLString },
-        role: { type: GraphQLInt }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        return await u_AddUser(args, context);
+        const userInfo = await u_AddUser(args, context);
+        const parsedUser = await parseUser(userInfo[0]);
+        return parsedUser
       }
     },
     UpdateUserPassword: {
@@ -48,9 +59,9 @@ export default new GraphQLObjectType({
         userName: { type: GraphQLString },
         hash: { type: GraphQLString }
       },
-      resolve: async (parent, args, context, resolveInfo) => {
+      resolve: authenticated(async (parent, args, context, resolveInfo) => {
         return await u_UdpatePassword(args, context);
-      }
+      })
     },
     UpdateUserMetadata: {
       type: User,
@@ -59,9 +70,11 @@ export default new GraphQLObjectType({
         userName: { type: GraphQLString },
         userMetadata: { type: GraphQLJSON }
       },
-      resolve: async (parent, args, context, resolveInfo) => {
-        return await u_UpdateMetadata(args, context);
-      }
+      resolve: authenticated(async (parent, args, context, resolveInfo) => {
+        const userInfo = await u_UpdateMetadata(args, context);
+        const parsedUser = await parseUser(userInfo[0]);
+        return parsedUser
+      })
     },
     SignIn: {
       type: User,
@@ -71,7 +84,8 @@ export default new GraphQLObjectType({
         token: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        return await u_SignIn(args, context);
+        const c_token = await u_SignIn(args, context);
+        return { token: c_token }
       }
     },
     AddPost: {
@@ -81,7 +95,9 @@ export default new GraphQLObjectType({
         postMetadata: { type: GraphQLJSON }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        return p_AddPost(args, context, postInfo => parsePost(postInfo));
+        const postInfo = await p_AddPost(args, context);
+        const parsedPost = await parsePost(postInfo[0]);
+        return parsedPost
       }
     },
     UpdatePost: {
@@ -91,7 +107,9 @@ export default new GraphQLObjectType({
         postMetadata: { type: GraphQLJSON }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        return await p_UdpateMetadata(args, context);
+        const postInfo = await p_UdpateMetadata(args, context);
+        const parsedPost = await parsePost(postInfo[0]);
+        return parsedPost
       }
     },
     DeletePost: {
@@ -100,8 +118,9 @@ export default new GraphQLObjectType({
         ID: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        const deletePostFields = await p_DeletePost(args, context);
-        return deletePostFields;
+        const postInfo = await p_DeletePost(args, context);
+        const parsedPost = await parsePost(postInfo[0]);
+        return parsedPost
       }
     },
     AddComment: {

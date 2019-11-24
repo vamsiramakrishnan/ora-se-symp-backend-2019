@@ -4,19 +4,12 @@ import moment from 'moment';
 import dbCall from '../../helpers/fetch';
 import knex from '../../helpers/database'
 
-export default async function UpdatePassword(args,context) {
-    if (args.ID != null){
-    return await dbCall(
-        `UPDATE USERTABLE 
-        SET HASH = '${args.hash}',
-        MODIFIEDAT = '${moment().format('DD-MMM-YYYY hh.mm.ss A')}' 
-        WHERE ID = '${args.ID}')`, knex, context)
-    }
-    else{
-        return await dbCall(
-            `UPDATE USERTABLE 
-               SET HASH = '${args.hash}',
-               MODIFIEDAT = '${moment().format('DD-MMM-YYYY hh.mm.ss A')}' 
-             WHERE USERNAME = '${args.userName}'`, knex, context)
-    }
+export default async function UpdatePassword(args, context) {
+    return await knex('USERTABLE')
+        .returning(userReturnArray)
+        .where({ "ID": args.ID })
+        .update({
+            "HASH": await bcrypt.hash(args.hash, 10),
+            "MODIFIEDAT": moment().format('DD-MMM-YYYY hh.mm.ss A')
+        })
 }

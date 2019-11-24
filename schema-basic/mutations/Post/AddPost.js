@@ -1,11 +1,12 @@
 import uuid from "uuid";
 import moment from "moment";
-import dbCall from "../../helpers/fetch";
 import knex from "../../helpers/database";
+import { postReturnArray } from "../../helpers/returning";
 
 export default async function AddPost(args, context) {
+
   return await knex("POSTTABLE")
-    .returning(["ID", "AUTHORID", "POSTMETADATA", "CREATEDAT", "MODIFIEDAT"])
+    .returning(postReturnArray)
     .insert({
       ID: uuid.v1(),
       AUTHORID: args.authorID,

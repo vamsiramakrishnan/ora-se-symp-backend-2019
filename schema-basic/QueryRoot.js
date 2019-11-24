@@ -22,14 +22,6 @@ export default new GraphQLObjectType({
       type: GraphQLString,
       resolve: () => joinMonster.version,
     },
-    users: {
-      type: new GraphQLList(User),
-      resolve: (parent, args, context, resolveInfo) => {
-        return joinMonster(resolveInfo, context, sql =>
-          dbCall(sql, knex, context),
-        );
-      },
-    },
     user: {
       type: User,
       args: {
@@ -40,7 +32,6 @@ export default new GraphQLObjectType({
       },
       // this function generates the WHERE condition
       where: (usersTable, args, context) => {
-        // eslint-disable-line no-unused-vars
         return `${usersTable}.ID = '${args.id}'`;
       },
       resolve: (parent, args, context, resolveInfo) => {
@@ -49,8 +40,25 @@ export default new GraphQLObjectType({
         );
       },
     },
-    comments: {
-      type: new GraphQLList(Comment),
+    userByName: {
+      type: User,
+      args: {
+        userName: {
+          description: 'The user name',
+          type: new GraphQLNonNull(GraphQLString),
+        },
+      },
+      where: (usersTable, args, context) => {
+        return `${usersTable}.USERNAME = '${args.userName}'`;
+      },
+      resolve: (parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      },
+    },
+    users: {
+      type: new GraphQLList(User),
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
@@ -74,8 +82,8 @@ export default new GraphQLObjectType({
         );
       },
     },
-    posts: {
-      type: new GraphQLList(Post),
+    comments: {
+      type: new GraphQLList(Comment),
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
@@ -93,6 +101,14 @@ export default new GraphQLObjectType({
       where: (postTable, args, context) => {
         return `${postTable}.ID = '${args.id}'`;
       },
+      resolve: (parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      },
+    },
+    posts: {
+      type: new GraphQLList(Post),
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),

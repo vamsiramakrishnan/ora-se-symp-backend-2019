@@ -22,7 +22,7 @@ const User = new GraphQLObjectType({
     ID: {
       // no `sqlColumn` and no `resolve`. assumed that the column name is the same as the field name: id
       type: GraphQLString,
-      sqlColumn:'ID'
+      sqlColumn: 'ID'
     },
     userName: {
       type: GraphQLString,
@@ -46,20 +46,24 @@ const User = new GraphQLObjectType({
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.LOCATION'
     },
-    token :{
+    token: {
       type: GraphQLString,
     },
-    userDepartment: {
+    Department: {
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.DEPARTMENT'
     },
-    userRoom: {
+    Room: {
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.ROOM'
     },
-    userProfilePic: {
+    ProfilePic: {
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.PROFILEPIC'
+    },
+    NumLogins: {
+      type: GraphQLInt,
+      sqlColumn: 'NUMLOGINS'
     },
     createdAt: {
       type: GraphQLString,
@@ -79,13 +83,13 @@ const User = new GraphQLObjectType({
     posts: {
       description: 'A list of Posts the user has written',
       // has another GraphQLObjectType as a field
-      type: new GraphQLList(Post), 
+      type: new GraphQLList(Post),
       sqlJoin: (userTable, postTable) =>
         `${userTable}.ID = ${postTable}.AUTHORID`,
       where: table => `${table}.ISDELETED = 'N'`,
       orderBy: {
         CREATEDAT: 'DESC',
-      },  
+      },
     },
     comments: {
       description: 'List of Comments the user has written on Posts',

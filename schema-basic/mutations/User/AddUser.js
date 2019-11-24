@@ -4,18 +4,21 @@ import moment from 'moment';
 import dbCall from '../../helpers/fetch';
 import knex from '../../helpers/database';
 import bcrypt from 'bcrypt'
+import { userReturnArray } from '../../helpers/returning';
+import { userMetadataStruct } from '../../helpers/metadataStruct';
 
 export default async function AddUser(args, context) {
-    return await bcrypt.hash(args.hash, 10, function (res, err) {
-        dbCall(
-            `INSERT INTO USERTABLE (ID, USERNAME, HASH, FIRSTNAME, LASTNAME, CREATEDAT, MODIFIEDAT, ROLE ) 
-            VALUES ('${uuid.v1()}', 
-            '${args.userName}', 
-            '${res}', 
-            '${args.firstName}', 
-            '${args.lastName}', 
-            '${moment().format('DD-MMM-YYYY hh.mm.ss A')}', 
-            '${moment().format('DD-MMM-YYYY hh.mm.ss A')}',
-            '1' )`, knex, context)
-    })
+  return await knex("USERTABLE")
+    .returning(userReturnArray)
+    .insert({
+      ID: uuid.v1(),
+      USERNAME: args.userName,
+      HASH: await bcrypt.hash(args.hash, 10),
+      FIRSTNAME: args.firstName,
+      LASTNAME: args.lastName,
+      USERMETADATA: JSON.stringify(userMetadataStruct),
+      CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
+      MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
+      NUMLOGINS: "0"
+    });
 }

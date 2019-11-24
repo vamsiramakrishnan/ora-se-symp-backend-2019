@@ -9,7 +9,7 @@ CREATE TABLE userTable
      userMetadata VARCHAR2 (4000) , 
      createdAt    TIMESTAMP  NOT NULL , 
      modifiedAt   TIMESTAMP  NOT NULL , 
-     role         NUMBER (*,0)  NOT NULL);
+     numlogins         NUMBER (*,0)  NOT NULL);
 
 
 CREATE UNIQUE INDEX userTable_IDX ON userTable 
@@ -29,7 +29,7 @@ ALTER TABLE userTable
     USING INDEX userTable_IDX;
 
 ALTER TABLE userTable 
-    ADD CONSTRAINT isJSON 
+    ADD CONSTRAINT isUserMetadataJSON 
     CHECK ( userMetadata IS JSON);
 
 /*CheckInTable*/
@@ -72,7 +72,7 @@ CREATE TABLE postTable
     );
 
 ALTER TABLE postTable 
-    ADD CONSTRAINT isJSON 
+    ADD CONSTRAINT isPosttMetadataJSON 
     CHECK ( postMetadata IS JSON);
 
 ALTER TABLE postTable 
@@ -115,7 +115,7 @@ CREATE TABLE commentsTable
     );
 
 ALTER TABLE commentsTable 
-    ADD CONSTRAINT ISJSON1 
+    ADD CONSTRAINT isCommentMetadataJSON
     CHECK ( commentMetadata IS JSON);
 
 ALTER TABLE commentsTable 
