@@ -14,6 +14,13 @@ import Comment from './queries/Comment';
 import Post from './queries/Post';
 import Event from './queries/Event';
 
+const authenticated = fn => (parent, args, context, info) => {
+  if (context && context.user) {
+    return fn(parent, args, context, info)
+  }
+  throw new Error('User is not authenticated')
+}
+
 export default new GraphQLObjectType({
   description: 'Global Query Object',
   name: 'Query',
@@ -37,11 +44,11 @@ export default new GraphQLObjectType({
       orderBy: {
         CREATEDAT: 'DESC'
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     userByName: {
       type: User,
@@ -57,22 +64,22 @@ export default new GraphQLObjectType({
       orderBy: {
         CREATEDAT: 'DESC'
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     users: {
       type: new GraphQLList(User),
       orderBy: {
         CREATEDAT: 'DESC'
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     comment: {
       type: Comment,
@@ -88,22 +95,22 @@ export default new GraphQLObjectType({
       where: (commentsTable, args, context) => {
         return `${commentsTable}.ID = '${args.id}'`;
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     comments: {
       type: new GraphQLList(Comment),
       orderBy: {
         CREATEDAT: 'DESC'
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     post: {
       type: Post,
@@ -119,22 +126,22 @@ export default new GraphQLObjectType({
       where: (postTable, args, context) => {
         return `${postTable}.ID = '${args.id}'`;
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     posts: {
       type: new GraphQLList(Post),
       orderBy: {
         CREATEDAT: 'DESC'
       },
-      resolve: (parent, args, context, resolveInfo) => {
+      resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
         );
-      },
+      }),
     },
     event: {
       type: Event,

@@ -94,11 +94,11 @@ export default new GraphQLObjectType({
         authorID: { type: GraphQLString },
         postMetadata: { type: GraphQLJSON }
       },
-      resolve: async (parent, args, context, resolveInfo) => {
+      resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_AddPost(args, context);
         const parsedPost = await parsePost(postInfo[0]);
         return parsedPost
-      }
+      })
     },
     UpdatePost: {
       type: Post,
@@ -117,11 +117,11 @@ export default new GraphQLObjectType({
       args: {
         ID: { type: GraphQLString }
       },
-      resolve: async (parent, args, context, resolveInfo) => {
+      resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_DeletePost(args, context);
         const parsedPost = await parsePost(postInfo[0]);
         return parsedPost
-      }
+      })
     },
     AddComment: {
       type: Comment,
