@@ -1,12 +1,12 @@
 import express from 'express'
 import graphqlHTTP from 'express-graphql';
 import cors from 'cors';
-import { printSchema } from 'graphql';
 import schema from './schema-basic/index';
 import path from 'path';
 import jwt from 'express-jwt';
 import User from './schema-basic/models/Model';
 import bodyParser from 'body-parser';
+import knex from './schema-basic/helpers/database';
 
 // Create the Express app
 const app = express();
@@ -17,12 +17,15 @@ app.use(
   jwt({
     secret: 'SeSyMp#2019_AmRiTsAr',
     requestProperty: 'auth',
-    credentialsRequired: false
+    credentialsRequired: false,
+    userProperty: 'user',
   })
 )
 app.use('/graphql', async (req, res, next) => {
+  console.log(req.auth)
   if (req.auth) {
-    const user = await User.query().findOne({ userName: req.auth.sub })
+    const dbDump = await knex.from('USERTABLE').where({ userName: req.auth }).select('*');
+    const user = dbDump[0];
     req.context = {
       user
     }
