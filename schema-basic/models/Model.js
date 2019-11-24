@@ -22,6 +22,13 @@ export class Comment extends Model {
     }
 }
 
+
+export class Likes extends Model {
+    static get tableName() {
+        return 'LIKESTABLE'
+    }
+}
+
 export class Event extends Model {
     static get tableName() {
         return 'EVENTSTABLE'

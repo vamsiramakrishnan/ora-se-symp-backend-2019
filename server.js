@@ -1,7 +1,7 @@
 import express from 'express'
 import graphqlHTTP from 'express-graphql';
 import cors from 'cors';
-import graphql from 'graphql';
+import { printSchema } from 'graphql';
 import schema from './schema-basic/index';
 import path from 'path';
 import jwt from 'express-jwt';
@@ -10,6 +10,7 @@ import bodyParser from 'body-parser';
 
 // Create the Express app
 const app = express();
+// console.log(printSchema(schema));
 app.use(cors());
 app.use(
   '/graphql',
@@ -22,7 +23,6 @@ app.use(
 app.use('/graphql', async (req, res, next) => {
   if (req.auth) {
     const user = await User.query().findOne({ userName: req.auth.sub })
-    console.log(user);
     req.context = {
       user
     }

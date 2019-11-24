@@ -47,7 +47,7 @@ export default new GraphQLObjectType({
         `${postTable}.AUTHORID = ${userTable}.ID`
     },
     authorID: {
-      type: GraphQLInt,
+      type: GraphQLString,
       sqlColumn: "AUTHORID"
     },
     comments: {
@@ -59,7 +59,10 @@ export default new GraphQLObjectType({
         // the other column to compare to
         parentKey: "ID"
       },
-      where: commentsTable => `${commentsTable}.ISDELETED = 'N'`
+      where: commentsTable => `${commentsTable}.ISDELETED = 'N'`,
+      orderBy: {
+        CREATEDAT: "DESC"
+      }
     },
     numComments: {
       description: "The number of comments on this post",
@@ -69,7 +72,7 @@ export default new GraphQLObjectType({
         `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`
     },
     isDeleted: {
-      type: GraphQLBoolean,
+      type: GraphQLString,
       sqlColumn: "ISDELETED"
     },
     createdAt: {

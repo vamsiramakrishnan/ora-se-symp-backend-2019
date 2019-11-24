@@ -21,12 +21,14 @@ export default new GraphQLObjectType({
     requestorID: {
       description: 'Person who is following',
       // assumed to be "body"
-      type: User,
+      type: GraphQLString,
+      sqlColumn: 'REQUESTORID'
     },
     acceptorID: {
       description: 'Person who is followed',
       // a back reference to its Post
-      type: User,
+      type: GraphQLString,
+      sqlColumn: 'ACCEPTORID'
       // how to join these tables
     },
     createdAt: {

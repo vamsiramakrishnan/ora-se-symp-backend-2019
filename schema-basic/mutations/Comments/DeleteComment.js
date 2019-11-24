@@ -10,7 +10,6 @@ export default async function DeleteComment(args, context) {
         .where({ "ID": args.ID })
         .update({
             ISDELETED: "Y",
-            CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
             MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
         });
 }

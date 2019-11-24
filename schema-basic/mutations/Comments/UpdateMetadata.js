@@ -10,7 +10,6 @@ export default async function UpdateMetadata(args, context) {
         .where({ "ID": args.ID })
         .update({
             COMMENTMETADATA: args.commentMetadata,
-            CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
             MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
         });
 }

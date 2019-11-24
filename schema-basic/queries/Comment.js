@@ -22,13 +22,19 @@ export default new GraphQLObjectType({
     },
     commentMetadata: {
       description: 'The metadata of the comment',
-      sqlColumn:'COMMENTMETADATA',
+      sqlColumn: 'COMMENTMETADATA',
       // assumed to be "body"
       type: GraphQLString,
     },
     commentContent: {
       description: 'The Content of the comment',
-      sqlColumn:'COMMENTMETADATA.COMMENTCONTENT',
+      sqlColumn: 'COMMENTMETADATA"."COMMENTCONTENT',
+      // assumed to be "body"
+      type: GraphQLString,
+    },
+    commentImages: {
+      description: 'The Images in the comment',
+      sqlColumn: 'COMMENTMETADATA"."COMMENTCONTENT',
       // assumed to be "body"
       type: GraphQLString,
     },
@@ -48,15 +54,15 @@ export default new GraphQLObjectType({
         `${commentTable}.AUTHORID = ${userTable}.ID`,
     },
     authorID: {
-      type: GraphQLInt,
+      type: GraphQLString,
       sqlcolumn: 'AUTHORID',
     },
     postID: {
-      type: GraphQLInt,
+      type: GraphQLString,
       sqlColumn: 'POSTID',
     },
     isDeleted: {
-      type: GraphQLBoolean,
+      type: GraphQLString,
     },
     createdAt: {
       type: GraphQLString,
@@ -65,12 +71,6 @@ export default new GraphQLObjectType({
     modifiedAt: {
       type: GraphQLString,
       sqlColumn: 'MODIFIEDAT',
-    },
-    numComments: {
-      description: 'Number of Comments the user has Written on Posts',
-      type: GraphQLInt,
-      sqlExpr: userTable =>
-        `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE AUTHORID = ${userTable}.ID AND ISDELETED = 'N')`,
-    },
+    }
   }),
 });
