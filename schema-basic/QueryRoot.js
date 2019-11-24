@@ -34,6 +34,9 @@ export default new GraphQLObjectType({
       where: (usersTable, args, context) => {
         return `${usersTable}.ID = '${args.id}'`;
       },
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
@@ -51,6 +54,9 @@ export default new GraphQLObjectType({
       where: (usersTable, args, context) => {
         return `${usersTable}.USERNAME = '${args.userName}'`;
       },
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
@@ -59,6 +65,9 @@ export default new GraphQLObjectType({
     },
     users: {
       type: new GraphQLList(User),
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
@@ -73,6 +82,9 @@ export default new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString),
         },
       },
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       where: (commentsTable, args, context) => {
         return `${commentsTable}.ID = '${args.id}'`;
       },
@@ -84,6 +96,9 @@ export default new GraphQLObjectType({
     },
     comments: {
       type: new GraphQLList(Comment),
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
@@ -98,6 +113,9 @@ export default new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString),
         },
       },
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       where: (postTable, args, context) => {
         return `${postTable}.ID = '${args.id}'`;
       },
@@ -109,6 +127,9 @@ export default new GraphQLObjectType({
     },
     posts: {
       type: new GraphQLList(Post),
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),

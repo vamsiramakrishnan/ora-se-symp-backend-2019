@@ -24,19 +24,19 @@ export default new GraphQLObjectType({
       sqlColumn: "POSTMETADATA",
       description: "The Metadata of the post",
       // assumed to be "body"
-      type: GraphQLString
+      type: GraphQLString,
     },
     postContent: {
       sqlColumn: `POSTMETADATA"."POSTCONTENT`,
       description: "The content of the post",
       // assumed to be "body"
-      type: GraphQLString
+      type: GraphQLString,
     },
     postImages: {
-      sqlColumn: `'POSTMETADATA"."POSTIMAGES`,
+      sqlColumn: `POSTMETADATA"."POSTIMAGES`,
       description: "Images in the Post",
       // assumed to be "body"
-      type: GraphQLString
+      type: GraphQLString,
     },
     author: {
       description: "The user that created the post",

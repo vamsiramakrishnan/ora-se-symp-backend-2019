@@ -18,6 +18,12 @@ export class Post extends Model {
 
 export class Comment extends Model {
     static get tableName() {
-        return 'COMMENTTABLE'
+        return 'COMMENTSTABLE'
+    }
+}
+
+export class Event extends Model {
+    static get tableName() {
+        return 'EVENTSTABLE'
     }
 }
