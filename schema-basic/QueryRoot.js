@@ -9,12 +9,13 @@ import {
 import joinMonster from 'join-monster';
 import knex from './helpers/database';
 import dbCall from './helpers/fetch';
-import User from './queries/User';
-import Comment from './queries/Comment';
-import Post from './queries/Post';
-import Event from './queries/Event';
-import Agenda from './queries/Agenda';
-import Hashtag from './queries/Hashtags';
+
+import User from './types/User';
+import Comment from './types/Comment';
+import Post from './types/Post';
+import Event from './types/Event';
+import Agenda from './types/Agenda';
+import Hashtag from './types/Hashtags';
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -200,9 +201,6 @@ export default new GraphQLObjectType({
     },
     hashtags: {
       type: new GraphQLList(Hashtag),
-      orderBy: {
-        CREATEDAT: 'DESC'
-      },
       resolve: authenticated((parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),

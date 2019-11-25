@@ -4,7 +4,6 @@ import cors from 'cors';
 import schema from './schema-basic/index';
 import path from 'path';
 import jwt from 'express-jwt';
-import User from './schema-basic/models/Model';
 import bodyParser from 'body-parser';
 import knex from './schema-basic/helpers/database';
 

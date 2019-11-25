@@ -1,4 +1,4 @@
-import {GraphQLSchema} from 'graphql';
+import { GraphQLSchema } from 'graphql';
 import QueryRoot from './QueryRoot';
 import MutationRoot from './MutationRoot';
 

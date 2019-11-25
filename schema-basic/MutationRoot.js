@@ -8,21 +8,21 @@ import {
 
 import { GraphQLJSON } from "graphql-type-json";
 
-import User from "./queries/User";
+import User from "./types/User";
 import u_AddUser from "./mutations/User/AddUser";
 import u_UdpatePassword from "./mutations/User/UpdatePassword";
 import u_UpdateMetadata from "./mutations/User/UpdateMetadata";
 import u_SignIn from "./mutations/User/SignIn";
 import parseUser from "./parsers/parseUser";
 
-import Post from "./queries/Post";
+import Post from "./types/Post";
 import p_AddPost from "./mutations/Post/AddPost";
 import p_UdpateMetadata from "./mutations/Post/UpdateMetadata";
 import p_DeletePost from "./mutations/Post/DeletePost";
 import parsePost from "./parsers/parsePost";
 
 //
-import Comment from "./queries/Comment";
+import Comment from "./types/Comment";
 import c_AddComment from "./mutations/Comments/AddComment";
 import c_UpdateMetadata from "./mutations/Comments/AddComment";
 import c_DeleteComment from "./mutations/Comments/DeleteComment";
