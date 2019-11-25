@@ -43,7 +43,7 @@ const User = new GraphQLObjectType({
       type: GraphQLJSON,
       sqlColumn: 'USERMETADATA',
     },
-    userLocation: {
+    Location: {
       type: GraphQLString,
       sqlColumn: 'USERMETADATA.LOCATION'
     },
