@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
+    "build-css": "node-sass scss/app.scss public/css/app.css",
     "build-server": "babel -d ./build ./server -s",
     "build": "npm run clean && npm run build-css && npm run build-server",
     "lint": "eslint source/ --quiet",
-    "start": "node ./build/server.js",
-    "debug": "node --debug ./build/server.js",
+    "start": "node ./build/index.js",
+    "debug": "node --debug ./build/index.js",
     "test": "for i in $(ls tests/); do babel-node \"./tests/${i}\" | faucet ; done",
     "validate": "npm run lint; npm run test && npm outdated --depth 0"
   },
