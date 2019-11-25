@@ -4,7 +4,7 @@
   "description": "A live demo of the Join Monster library.",
   "main": "server.js",
   "scripts": {
-    "clean": "del build && mkdir build",
+    "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./server -s",
     "build": "npm run clean && npm run build-css && npm run build-server",
     "lint": "eslint source/ --quiet",
