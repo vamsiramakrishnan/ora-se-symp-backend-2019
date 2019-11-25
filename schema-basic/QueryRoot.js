@@ -14,6 +14,7 @@ import Comment from './queries/Comment';
 import Post from './queries/Post';
 import Event from './queries/Event';
 import Agenda from './queries/Agenda';
+import Hashtag from './queries/Hashtags';
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -176,6 +177,37 @@ export default new GraphQLObjectType({
           dbCall(sql, knex, context),
         );
       },
+    },
+    hashtag: {
+      type: Hashtag,
+      args: {
+        id: {
+          description: 'HashTagID Search',
+          type: new GraphQLNonNull(GraphQLString),
+        },
+      },
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
+      where: (hashtagsTable, args, context) => {
+        return `${hashtagsTable}.ID = '${args.id}'`;
+      },
+      resolve: authenticated((parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      }),
+    },
+    hashtags: {
+      type: new GraphQLList(Hashtag),
+      orderBy: {
+        CREATEDAT: 'DESC'
+      },
+      resolve: authenticated((parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      }),
     },
   }),
 });

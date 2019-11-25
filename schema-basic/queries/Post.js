@@ -8,6 +8,7 @@ import {
 
 import User from "./User";
 import Comment from "./Comment";
+import Hashtag from "./Hashtags";
 
 export default new GraphQLObjectType({
   description: "A post from a user",
@@ -64,12 +65,32 @@ export default new GraphQLObjectType({
         CREATEDAT: "DESC"
       }
     },
+    hashtags: {
+      description: "The hashtags on this post",
+      type: new GraphQLList(Hashtag),
+      sqlBatch: {
+        // which column to match up to the users
+        thisKey: "POSTID",
+        // the other column to compare to
+        parentKey: "ID"
+      },
+      orderBy: {
+        CREATEDAT: "DESC"
+      }
+    },
     numComments: {
       description: "The number of comments on this post",
       type: GraphQLInt,
       // use a correlated subquery in a raw SQL expression to do things like aggregation
       sqlExpr: postTable =>
         `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`
+    },
+    numHashtags: {
+      description: "The number of comments on this post",
+      type: GraphQLInt,
+      // use a correlated subquery in a raw SQL expression to do things like aggregation
+      sqlExpr: postTable =>
+        `(SELECT COUNT(*) FROM HASHTAGSTABLE WHERE POSTID = ${postTable}.ID)`
     },
     isDeleted: {
       type: GraphQLString,

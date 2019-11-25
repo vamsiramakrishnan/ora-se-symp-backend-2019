@@ -9,7 +9,7 @@ export default async function UpdateMetadata(args, context) {
     .returning(userReturnArray)
     .where({ "ID": args.ID })
     .update({
-      "USERMETADATA": args.userMetadata,
+      "USERMETADATA": { "LOCATION": args.location, "ROOM": args.room, "PROFILEPIC": args.profilePic, "DEPARTMENT": args.department },
       "MODIFIEDAT": moment().format('DD-MMM-YYYY hh.mm.ss A')
     })
 }

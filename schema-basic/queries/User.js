@@ -10,6 +10,7 @@ import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 import Post from './Post';
 import Comment from './Comment';
 import Event from './Event';
+import Hashtags from './Hashtags';
 
 const User = new GraphQLObjectType({
   description: 'An SE Symposium User',
@@ -146,7 +147,17 @@ const User = new GraphQLObjectType({
         ],
       },
     },
-
+    hashtags: {
+      description: ' List of Hashtags created by the User',
+      type: new GraphQLList(Hashtags),
+      junction: {
+        sqlTable: 'POSTTABLE',
+        sqlJoins: [
+          (userTable, postTable) => `${userTable}.ID =${postTable}.AUTHORID`,
+          (postTable, hashtagTable) => `${postTable}.ID = ${hashtagTable}.POSTID`
+        ],
+      }
+    },
     numPosts: {
       description: 'Number of Comments the user has Written on Posts',
       type: GraphQLInt,
@@ -158,6 +169,18 @@ const User = new GraphQLObjectType({
       type: GraphQLInt,
       sqlExpr: userTable =>
         `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE AUTHORID = ${userTable}.ID AND ISDELETED = 'N')`,
+    },
+    hashtags: {
+      description: ' List of Hashtags created by the User',
+      type: new GraphQLList(Hashtags),
+      junction: {
+        sqlTable: 'POSTTABLE',
+        sqlJoins: [
+          (userTable, postTable) => `${userTable}.ID =${postTable}.AUTHORID`,
+          (postTable, hashtagTable) => `${postTable}.ID = ${hashtagTable}.POSTID`
+        ],
+        sqlExpr: 'SELECT COUNT(*)'
+      }
     },
   }),
 });

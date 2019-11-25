@@ -68,7 +68,10 @@ export default new GraphQLObjectType({
       args: {
         ID: { type: GraphQLString },
         userName: { type: GraphQLString },
-        userMetadata: { type: GraphQLJSON }
+        room: { type: GraphQLString },
+        location: { type: GraphQLString },
+        department: { type: GraphQLString },
+        location: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const userInfo = await u_UpdateMetadata(args, context);
@@ -92,7 +95,8 @@ export default new GraphQLObjectType({
       type: Post,
       args: {
         authorID: { type: GraphQLString },
-        postMetadata: { type: GraphQLJSON }
+        postContent: { type: GraphQLString },
+        postImages: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_AddPost(args, context);

@@ -7,7 +7,7 @@ export default async function UpdatePost(args, context) {
         .returning(postReturnArray)
         .where({ "ID": args.ID })
         .update({
-            "POSTMETADATA": args.postMetadata,
+            "POSTMETADATA": { "POSTCONTENT": args.postContent, "POSTIMAGES": args.postImages },
             "MODIFIEDAT": moment().format('DD-MMM-YYYY hh.mm.ss A')
         })
 }
