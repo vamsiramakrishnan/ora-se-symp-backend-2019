@@ -12,7 +12,7 @@ export default async function AddComment(args, context) {
             ID: uuid.v1(),
             AUTHORID: args.authorID,
             POSTID: args.postID,
-            COMMENTMETADATA: args.commentMetadata,
+            COMMENTMETADATA: JSON.stringify(args.commentContent, args.commentImages),
             ISDELETED: "N",
             CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
             MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")

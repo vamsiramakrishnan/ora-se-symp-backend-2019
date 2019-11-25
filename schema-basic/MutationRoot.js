@@ -108,7 +108,8 @@ export default new GraphQLObjectType({
       type: Post,
       args: {
         ID: { type: GraphQLString },
-        postMetadata: { type: GraphQLJSON }
+        postContent: { type: GraphQLString },
+        postImages: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_UdpateMetadata(args, context);
@@ -132,7 +133,8 @@ export default new GraphQLObjectType({
       args: {
         authorID: { type: GraphQLString },
         postID: { type: GraphQLString },
-        commentMetadata: { type: GraphQLJSON }
+        commentContent: { type: GraphQLString },
+        commentImages: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
         return await c_AddComment(args, context);
@@ -142,7 +144,8 @@ export default new GraphQLObjectType({
       type: Comment,
       args: {
         ID: { type: GraphQLString },
-        commentMetadata: { type: GraphQLJSON }
+        commentContent: { type: GraphQLString },
+        commentImages: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
         return await c_UpdateMetadata(args, context);

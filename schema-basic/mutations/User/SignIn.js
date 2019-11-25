@@ -12,7 +12,6 @@ export default async function SignIn(args, context) {
     const userInfo = await knex("USERTABLE").where({ USERNAME: args.userName }).increment("NUMLOGINS").returning(userReturnArray);
     const parsedUser = await parseUser(userInfo[0]);
     parsedUser.token = jwt.sign({ userName: args.userName }, "SeSyMp#2019_AmRiTsAr");
-    console.log(parsedUser)
     return parsedUser;
   }
   else {

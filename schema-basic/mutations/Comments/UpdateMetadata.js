@@ -9,7 +9,7 @@ export default async function UpdateMetadata(args, context) {
         .returning(commentReturnArray)
         .where({ "ID": args.ID })
         .update({
-            COMMENTMETADATA: args.commentMetadata,
+            COMMENTMETADATA: JSON.stringify(args.commentContent, args.commentImages),
             MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
         });
 }

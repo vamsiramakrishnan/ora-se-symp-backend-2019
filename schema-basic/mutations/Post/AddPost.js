@@ -10,7 +10,7 @@ export default async function AddPost(args, context) {
     .insert({
       ID: uuid.v1(),
       AUTHORID: args.authorID,
-      POSTMETADATA: { "POSTCONTENT": args.postContent, "POSTIMAGES": args.postImages },
+      POSTMETADATA: JSON.stringify({ "POSTCONTENT": args.postContent, "POSTIMAGES": args.postImages }),
       ISDELETED: "N",
       CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
       MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
