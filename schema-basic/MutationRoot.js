@@ -84,8 +84,8 @@ export default new GraphQLObjectType({
         token: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        const c_token = await u_SignIn(args, context);
-        return { token: c_token }
+        const parsedUser = await u_SignIn(args, context);
+        return parsedUser
       }
     },
     AddPost: {

@@ -13,6 +13,7 @@ import User from './queries/User';
 import Comment from './queries/Comment';
 import Post from './queries/Post';
 import Event from './queries/Event';
+import Agenda from './queries/Agenda';
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -162,6 +163,14 @@ export default new GraphQLObjectType({
     },
     events: {
       type: new GraphQLList(Event),
+      resolve: (parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      },
+    },
+    agenda: {
+      type: new GraphQLList(Agenda),
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql =>
           dbCall(sql, knex, context),
