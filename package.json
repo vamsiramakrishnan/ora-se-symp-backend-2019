@@ -4,8 +4,14 @@
   "description": "A live demo of the Join Monster library.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node server.js"
+    "clean": "del build && mkdir build",
+    "build-server": "babel -d ./build ./server -s",
+    "build": "npm run clean && npm run build-css && npm run build-server",
+    "lint": "eslint source/ --quiet",
+    "start": "node ./build/server.js",
+    "debug": "node --debug ./build/server.js",
+    "test": "for i in $(ls tests/); do babel-node \"./tests/${i}\" | faucet ; done",
+    "validate": "npm run lint; npm run test && npm outdated --depth 0"
   },
   "engines": {
     "node": ">=6.0.0"

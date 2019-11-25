@@ -22,7 +22,6 @@ app.use(
   })
 )
 app.use('/graphql', async (req, res, next) => {
-  console.log(req.auth)
   if (req.auth) {
     const dbDump = await knex.from('USERTABLE').where({ userName: req.auth }).select('*');
     const user = dbDump[0];
