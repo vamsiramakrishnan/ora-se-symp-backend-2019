@@ -1,36 +1,97 @@
-# This references the default nodejs container from
-# the Docker Hub: https://registry.hub.docker.com/_/node/
-# If you want Nodesource's container you would reference nodesource/node
-# Read more about containers on our dev center
-# https://devcenter.wercker.com/overview-and-core-concepts/containers/
-box: node
-# This is the build pipeline. Pipelines are the core of wercker
-# Read more about pipelines on our dev center
-# https://devcenter.wercker.com/development/pipelines/
 
-# You can also use services such as databases. Read more on our dev center:
-# https://devcenter.wercker.com/administration/services/
-# services:
-    # - postgres
-    # https://devcenter.wercker.com/administration/services/examples/postgresql/
-
-    # - mongo
-    # https://devcenter.wercker.com/administration/services/examples/mongodb/
+box: 
+  id: node:latest
 build:
-  # The steps that will be executed on build
-  # Steps make up the actions in your pipeline
-  # Read more about steps on our dev center:
-  # https://devcenter.wercker.com/development/steps/
   steps:
-    # A step that executes `npm install` command
     - npm-install
-    # A step that executes `npm test` command
-    - npm-test
-
-    # A custom script step, name value is used in the UI
-    # and the code value contains the command that get executed
+    - bash-template:
+        cwd: $WERCKER_ROOT
     - script:
         name: echo nodejs information
         code: |
+          cat ./config.json
           echo "node version $(node -v) running"
-          echo "npm version $(npm -v) running"
+          echo "npm version $(npm -v) running"          
+docker-build:
+  steps:
+    - internal/docker-build:
+        dockerfile: Dockerfile
+        image-name: $APP_NAME
+
+    - internal/docker-push: 
+        image-name: $APP_NAME
+        username: $PRIVATE_REGISTRY_USERNAME
+        password: $API_USER_TOKEN
+        repository: $TENANCY_NAME/$REPO_NAME/$APP_NAME
+        registry: $PRIVATE_REGISTRY_PATH 
+        tag: ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT},latest
+        
+  after-steps:
+    - install-packages:
+        packages: ruby
+    - pasonatquila/pretty-slack-notify@0.3.6:
+        webhook_url: $SLACK_URL
+        channel: $SLACK_CHANNEL
+
+kubernetes-deploy:
+  steps: 
+    - script:
+        name: debug
+        code: |
+          echo $WERCKER_OUTPUT_DIR
+          ls -l $WERCKER_OUTPUT_DIR
+          echo $WERCKER_ROOT
+          ls -l $WERCKER_ROOT
+  
+    - bash-template:
+        cwd: $WERCKER_ROOT/.
+  
+    - script:
+        name: Remove template files
+        cwd: $WERCKER_ROOT/.
+        code: |
+          rm *.template.yaml
+    - script:
+        name: debug
+        cwd: $WERCKER_ROOT/.
+        code: |
+          ls -l
+  
+    - script:
+        name: echo tags
+        code: |
+          echo "Docker image and tag:"
+          echo "${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT}"
+    - script:
+        name: echo deployment file
+        code: | 
+          cat ./backend-api-deployment.yaml
+# Comment this step if you have not created a secret manuallly / You are running the Wercker build for the first time 
+    - kubectl:
+        server: $KUBE_ENDPOINT
+        token: $KUBE_USER_TOKEN
+        insecure-skip-tls-verify: true
+        cwd: $WERCKER_ROOT/.
+        command: -n $K8SNAMESPACE delete secret $OCIR_SECRET_NAME
+
+    - kubectl:
+        server: $KUBE_ENDPOINT
+        token: $KUBE_USER_TOKEN
+        insecure-skip-tls-verify: true
+        cwd: $WERCKER_ROOT/.
+        command: -n se-test create secret docker-registry $OCIR_SECRET_NAME --docker-server='${PRIVATE_REGISTRY_PATH}' --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
+     
+    - kubectl:
+        server: $KUBE_ENDPOINT
+        token: $KUBE_USER_TOKEN
+        insecure-skip-tls-verify: true
+        cwd: $WERCKER_ROOT/.
+        command: -n se-test apply -f backend-api-deployment.yaml
+        
+  after-steps:
+    - install-packages:
+        packages: ruby
+    - pasonatquila/pretty-slack-notify@0.3.6:
+        webhook_url: $SLACK_URL
+        channel: $SLACK_CHANNEL
+      
