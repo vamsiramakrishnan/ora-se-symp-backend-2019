@@ -169,7 +169,11 @@ export default new GraphQLObjectType({
         eventID: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        return await e_EventRegistration(args, context);
+        const eventRegistrationInfo = await e_EventRegistration(args, context);
+        if (eventRegistrationInfo == 1) {
+          return { userID: "success" }
+        }
+        else return eventRegistrationInfo
       }
     },
   })
