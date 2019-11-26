@@ -13,7 +13,7 @@ export default async function AddUser(args, context) {
     .insert({
       ID: uuid.v1(),
       USERNAME: args.userName,
-      HASH: await bcrypt.hash(args.hash, 10),
+      HASH: args.hash,
       FIRSTNAME: args.firstName,
       LASTNAME: args.lastName,
       USERMETADATA: JSON.stringify(userMetadataStruct),
