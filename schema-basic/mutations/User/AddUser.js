@@ -1,9 +1,7 @@
 
 import uuid from 'uuid'
 import moment from 'moment';
-import dbCall from '../../helpers/fetch';
 import knex from '../../helpers/database';
-import bcrypt from 'bcrypt'
 import { userReturnArray } from '../../helpers/returning';
 import { userMetadataStruct } from '../../helpers/metadataStruct';
 

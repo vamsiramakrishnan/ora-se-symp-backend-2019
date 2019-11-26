@@ -1,6 +1,4 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import dbCall from "../../helpers/fetch";
 import knex from "../../helpers/database";
 import { userReturnArray } from "../../helpers/returning";
 import parseUser from "../../parsers/parseUser";
