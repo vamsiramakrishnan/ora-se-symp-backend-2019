@@ -11,6 +11,7 @@ import Post from './Post';
 import Comment from './Comment';
 import Event from './Event';
 import Hashtags from './Hashtags';
+import EventRegistration from './EventRegistration'
 
 const User = new GraphQLObjectType({
   description: 'An SE Symposium User',
@@ -145,6 +146,16 @@ const User = new GraphQLObjectType({
           (registrationTable, eventTable) =>
             `${registrationTable}.EVENTID = ${eventTable}.ID`,
         ],
+      },
+    },
+    eventRegistrations: {
+      description: 'Registrations for event ',
+      type: new GraphQLList(EventRegistration),
+      sqlJoin: (userTable, registrationTable) =>
+        `${userTable}.ID = ${registrationTable}.REGISTEREEID`,
+      where: table => `${table}.ISDELETED = 'N'`,
+      orderBy: {
+        CREATEDAT: 'DESC',
       },
     },
     hashtags: {

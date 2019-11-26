@@ -7,6 +7,7 @@ import {
 } from 'graphql';
 
 import User from './User';
+import EventRegistration from './EventRegistration';
 
 export default new GraphQLObjectType({
   description: 'Events in SE Symposium',
@@ -17,7 +18,7 @@ export default new GraphQLObjectType({
   fields: () => ({
     ID: {
       // SQL column assumed to be "id"
-      type: GraphQLInt,
+      type: GraphQLString,
     },
     eventName: {
       sqlColumn: 'EVENTNAME',
@@ -46,9 +47,19 @@ export default new GraphQLObjectType({
         where: registrationTable => `${registrationTable}.ISDELETED = 'N'`
       },
     },
+    registrations: {
+      description: 'Registrations for event ',
+      type: new GraphQLList(EventRegistration),
+      sqlJoin: (eventTable, registrationTable) =>
+        `${eventTable}.ID = ${registrationTable}.POSTID`,
+      where: table => `${table}.ISDELETED = 'N'`,
+      orderBy: {
+        CREATEDAT: 'DESC',
+      },
+    },
     numRegistrations: {
       description: 'The number of registrations in Event',
-      type: GraphQLInt,
+      type: GraphQLList(GraphQLInt),
       // use a correlated subquery in a raw SQL expression to do things like aggregation
       sqlExpr: eventTable =>
         `(SELECT COUNT(*) FROM EVENTREGISTRATIONTABLE WHERE EVENTID = ${eventTable}.ID AND ISDELETED = 'N')`,

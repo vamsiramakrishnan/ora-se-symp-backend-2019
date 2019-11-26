@@ -8,6 +8,7 @@ import {
 
 import { GraphQLJSON } from "graphql-type-json";
 
+// Users
 import User from "./types/User";
 import u_AddUser from "./mutations/User/AddUser";
 import u_UdpatePassword from "./mutations/User/UpdatePassword";
@@ -15,18 +16,24 @@ import u_UpdateMetadata from "./mutations/User/UpdateMetadata";
 import u_SignIn from "./mutations/User/SignIn";
 import parseUser from "./parsers/parseUser";
 
+// Posts
 import Post from "./types/Post";
 import p_AddPost from "./mutations/Post/AddPost";
 import p_UdpateMetadata from "./mutations/Post/UpdateMetadata";
 import p_DeletePost from "./mutations/Post/DeletePost";
 import parsePost from "./parsers/parsePost";
 
-//
+// Comments
 import Comment from "./types/Comment";
 import c_AddComment from "./mutations/Comments/AddComment";
 import c_UpdateMetadata from "./mutations/Comments/AddComment";
 import c_DeleteComment from "./mutations/Comments/DeleteComment";
 
+
+//Event Registration
+import EventRegistration from "./types/EventRegistration";
+import e_EventRegistration from './mutations/Events/RegisterEvent';
+import parseEventRegistration from './parsers/parseEventRegistration';
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -48,8 +55,7 @@ export default new GraphQLObjectType({
       },
       resolve: async (parent, args, context, resolveInfo) => {
         const userInfo = await u_AddUser(args, context);
-        const parsedUser = await parseUser(userInfo[0]);
-        return parsedUser
+        return await parseUser(userInfo[0]);
       }
     },
     UpdateUserPassword: {
@@ -75,8 +81,7 @@ export default new GraphQLObjectType({
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const userInfo = await u_UpdateMetadata(args, context);
-        const parsedUser = await parseUser(userInfo[0]);
-        return parsedUser
+        return await parseUser(userInfo[0]);
       })
     },
     SignIn: {
@@ -87,8 +92,7 @@ export default new GraphQLObjectType({
         token: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        const parsedUser = await u_SignIn(args, context);
-        return parsedUser
+        return await u_SignIn(args, context);
       }
     },
     AddPost: {
@@ -100,8 +104,7 @@ export default new GraphQLObjectType({
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_AddPost(args, context);
-        const parsedPost = await parsePost(postInfo[0]);
-        return parsedPost
+        return await parsePost(postInfo[0]);
       })
     },
     UpdatePost: {
@@ -113,8 +116,7 @@ export default new GraphQLObjectType({
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_UdpateMetadata(args, context);
-        const parsedPost = await parsePost(postInfo[0]);
-        return parsedPost
+        return await parsePost(postInfo[0]);
       })
     },
     DeletePost: {
@@ -124,8 +126,7 @@ export default new GraphQLObjectType({
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_DeletePost(args, context);
-        const parsedPost = await parsePost(postInfo[0]);
-        return parsedPost
+        return await parsePost(postInfo[0]);
       })
     },
     AddComment: {
@@ -136,9 +137,9 @@ export default new GraphQLObjectType({
         commentContent: { type: GraphQLString },
         commentImages: { type: GraphQLString }
       },
-      resolve: async (parent, args, context, resolveInfo) => {
+      resolve: authenticated(async (parent, args, context, resolveInfo) => {
         return await c_AddComment(args, context);
-      }
+      })
     },
     UpdateComment: {
       type: Comment,
@@ -159,6 +160,17 @@ export default new GraphQLObjectType({
       resolve: async (parent, args, context, resolveInfo) => {
         return await c_DeleteComment(args, context);
       }
-    }
+    },
+    EventRegister: {
+      type: EventRegistration,
+      args: {
+        userID: { type: GraphQLString },
+        eventSlot: { type: GraphQLString },
+        eventID: { type: GraphQLString }
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        return await e_EventRegistration(args, context);
+      }
+    },
   })
 });
