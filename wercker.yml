@@ -25,13 +25,6 @@ docker-build:
         repository: $TENANCY_NAME/$REPO_NAME/$APP_NAME
         registry: $PRIVATE_REGISTRY_PATH 
         tag: ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT},latest
-        
-  after-steps:
-    - install-packages:
-        packages: ruby
-    - pasonatquila/pretty-slack-notify@0.3.6:
-        webhook_url: $SLACK_URL
-        channel: $SLACK_CHANNEL
 
 kubernetes-deploy:
   steps: 
@@ -79,19 +72,11 @@ kubernetes-deploy:
         token: $KUBE_USER_TOKEN
         insecure-skip-tls-verify: true
         cwd: $WERCKER_ROOT/.
-        command: -n se-test create secret docker-registry $OCIR_SECRET_NAME --docker-server='${PRIVATE_REGISTRY_PATH}' --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
+        command: -n $K8SNAMESPACE create secret docker-registry $OCIR_SECRET_NAME --docker-server='${PRIVATE_REGISTRY_PATH}' --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
      
     - kubectl:
         server: $KUBE_ENDPOINT
         token: $KUBE_USER_TOKEN
         insecure-skip-tls-verify: true
         cwd: $WERCKER_ROOT/.
-        command: -n se-test apply -f backend-api-deployment.yaml
-        
-  after-steps:
-    - install-packages:
-        packages: ruby
-    - pasonatquila/pretty-slack-notify@0.3.6:
-        webhook_url: $SLACK_URL
-        channel: $SLACK_CHANNEL
-      
+        command: -n $K8SNAMESPACE apply -f backend-api-deployment.yaml
