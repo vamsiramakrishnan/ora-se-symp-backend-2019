@@ -16,6 +16,7 @@ import Post from './types/Post';
 import Event from './types/Event';
 import Agenda from './types/Agenda';
 import Hashtag from './types/Hashtags';
+import Quiz from './types/Quiz';
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -206,6 +207,41 @@ export default new GraphQLObjectType({
           dbCall(sql, knex, context),
         );
       }),
+    },
+    quiz: {
+      type: Quiz,
+      args: {
+        id: {
+          description: 'Quiz ID Number',
+          type: new GraphQLNonNull(GraphQLInt),
+        },
+      },
+      // this function generates the WHERE condition
+      where: (quizTable, args, context) => {
+        return `${quizTable}.ID = '${args.id}'`;
+      },
+      resolve: (parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      },
+    },
+    quizzes: {
+      type: new GraphQLList(Quiz),
+      args: {
+        isActive: {
+          description: 'Is the Quiz Active',
+          type: GraphQLInt
+        }
+      },
+      where: (quizTable, args, context) => {
+        return `${quizTable}.ISACTIVE = '${args.isActive}'`
+      },
+      resolve: (parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql =>
+          dbCall(sql, knex, context),
+        );
+      },
     },
   }),
 });
