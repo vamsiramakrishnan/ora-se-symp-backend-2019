@@ -29,7 +29,7 @@ spec:
       - name: $OCIR_SECRET_NAME
       containers:
       - name: $APP_NAME
-        image: $PRIVATE_REGISTRY_PATH/$TENANCY_NAME/$REPO_NAME/$APP_NAME:${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT}
+        image: $PRIVATE_REGISTRY_PATH:${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT}
         ports:
         - containerPort: 4000
           protocol: TCP
