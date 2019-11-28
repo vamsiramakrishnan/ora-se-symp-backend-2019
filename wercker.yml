@@ -47,21 +47,7 @@ kubernetes-deploy:
         name: echo deployment file
         code: | 
           cat ./backend-api-deployment.yaml
-# Comment this step if you have not created a secret manuallly / You are running the Wercker build for the first time 
-    - kubectl:
-        server: $KUBE_ENDPOINT
-        token: $KUBE_USER_TOKEN
-        insecure-skip-tls-verify: true
-        cwd: $WERCKER_ROOT/.
-        command: -n $K8SNAMESPACE delete secret $OCIR_SECRET_NAME
 
-    - kubectl:
-        server: $KUBE_ENDPOINT
-        token: $KUBE_USER_TOKEN
-        insecure-skip-tls-verify: true
-        cwd: $WERCKER_ROOT/.
-        command: -n $K8SNAMESPACE create secret docker-registry $OCIR_SECRET_NAME --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
-     
     - kubectl:
         server: $KUBE_ENDPOINT
         token: $KUBE_USER_TOKEN
