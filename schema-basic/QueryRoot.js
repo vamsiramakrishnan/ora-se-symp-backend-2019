@@ -238,9 +238,7 @@ export default new GraphQLObjectType({
         return `${quizTable}.ISACTIVE = '${args.isActive}'`
       },
       resolve: (parent, args, context, resolveInfo) => {
-        return joinMonster(resolveInfo, context, sql =>
-          dbCall(sql, knex, context),
-        );
+        return joinMonster(resolveInfo, context, sql => dbCall(sql, knex, context))
       },
     },
   }),
