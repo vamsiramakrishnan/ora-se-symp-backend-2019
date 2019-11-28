@@ -9,7 +9,6 @@ build:
     - script:
         name: echo nodejs information
         code: |
-          cat ./config.json
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"          
 docker-build:
@@ -22,8 +21,7 @@ docker-build:
         image-name: $APP_NAME
         username: $PRIVATE_REGISTRY_USERNAME
         password: $API_USER_TOKEN
-        repository: $TENANCY_NAME/$REPO_NAME/$APP_NAME
-        registry: $PRIVATE_REGISTRY_PATH 
+        repository: $APP_NAME
         tag: ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT},latest
 
 kubernetes-deploy:
@@ -72,7 +70,7 @@ kubernetes-deploy:
         token: $KUBE_USER_TOKEN
         insecure-skip-tls-verify: true
         cwd: $WERCKER_ROOT/.
-        command: -n $K8SNAMESPACE create secret docker-registry $OCIR_SECRET_NAME --docker-server='${PRIVATE_REGISTRY_PATH}' --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
+        command: -n $K8SNAMESPACE create secret docker-registry $OCIR_SECRET_NAME --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
      
     - kubectl:
         server: $KUBE_ENDPOINT
