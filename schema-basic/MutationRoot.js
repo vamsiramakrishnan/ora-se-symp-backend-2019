@@ -6,7 +6,7 @@ import {
   GraphQLInt
 } from "graphql";
 
-import { GraphQLJSON } from "graphql-type-json";
+import jwt from 'jsonwebtoken'
 
 // Users
 import User from "./types/User";
@@ -62,11 +62,13 @@ export default new GraphQLObjectType({
       type: User,
       args: {
         ID: { type: GraphQLString },
-        userName: { type: GraphQLString },
         hash: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
-        return await u_UdpatePassword(args, context);
+        const userInfo = await u_UdpatePassword(args, context);
+        const parsedUser = await parseUser(userInfo[0]);
+        parsedUser.token = jwt.sign({ userName: args.userName }, "SeSyMp#2019_AmRiTsAr");
+        return parsedUser
       })
     },
     UpdateUserMetadata: {
@@ -169,11 +171,8 @@ export default new GraphQLObjectType({
         eventID: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        const eventRegistrationInfo = await e_EventRegistration(args, context);
-        if (eventRegistrationInfo == 1) {
-          return { userID: "success" }
-        }
-        else return eventRegistrationInfo
+        const postInfo = await e_EventRegistration(args, context);
+        return await parseEventRegistration(postInfo[0]);
       }
     },
   })

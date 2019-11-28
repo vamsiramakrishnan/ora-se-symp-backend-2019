@@ -2,11 +2,10 @@
 import uuid from 'uuid'
 import moment from 'moment';
 import knex from '../../helpers/database';
-import eventReturnArray from '../../helpers/returning';
+import { eventReturnArray } from '../../helpers/returning';
 
 export default async function AddRegistration(args, context) {
     return await knex("EVENTREGISTRATIONTABLE")
-        .returning(eventReturnArray)
         .insert({
             ID: uuid.v1(),
             DAYID: args.eventSlot,
@@ -15,5 +14,5 @@ export default async function AddRegistration(args, context) {
             ISDELETED: "N",
             CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
             MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
-        });
+        }).returning(eventReturnArray);
 }

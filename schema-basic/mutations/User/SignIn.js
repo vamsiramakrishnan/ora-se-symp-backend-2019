@@ -15,4 +15,3 @@ export default async function SignIn(args, context) {
     return { token: "failure" }
   }
 }
-
