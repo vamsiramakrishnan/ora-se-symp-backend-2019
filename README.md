@@ -15,3 +15,5 @@ GraphQL + Join Monster + ATP backend based on Nodejs for the Social network buil
 
 ## For Feature Requests
 * Use the Feature Request Template 
+
+## First Release for K8S
