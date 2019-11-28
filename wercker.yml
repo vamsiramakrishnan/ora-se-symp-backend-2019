@@ -11,7 +11,8 @@ docker-build:
         image-name: $APP_NAME
         username: $PRIVATE_REGISTRY_USERNAME
         password: $API_USER_TOKEN
-        repository: $APP_NAME
+        registry: https://hub.docker.com
+        repository: $PRIVATE_REGISTRY_USERNAME/$APP_NAME
         tag: ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT},latest
 
 kubernetes-deploy:
