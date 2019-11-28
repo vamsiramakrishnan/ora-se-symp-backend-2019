@@ -26,12 +26,7 @@ kubernetes-deploy:
   
     - bash-template:
         cwd: $WERCKER_ROOT/.
-  
-    - script:
-        name: Remove template files
-        cwd: $WERCKER_ROOT/.
-        code: |
-          rm *.template.yaml
+        
     - script:
         name: debug
         cwd: $WERCKER_ROOT/.
