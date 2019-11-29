@@ -1,16 +1,6 @@
-
 box: 
   id: node:latest
-build:
-  steps:
-    - npm-install
-    - bash-template:
-        cwd: $WERCKER_ROOT
-    - script:
-        name: echo nodejs information
-        code: |
-          echo "node version $(node -v) running"
-          echo "npm version $(npm -v) running"          
+  
 docker-build:
   steps:
     - internal/docker-build:
@@ -21,7 +11,7 @@ docker-build:
         image-name: $APP_NAME
         username: $PRIVATE_REGISTRY_USERNAME
         password: $API_USER_TOKEN
-        repository: $APP_NAME
+        repository: $PRIVATE_REGISTRY_USERNAME/$APP_NAME
         tag: ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT},latest
 
 kubernetes-deploy:
@@ -36,12 +26,7 @@ kubernetes-deploy:
   
     - bash-template:
         cwd: $WERCKER_ROOT/.
-  
-    - script:
-        name: Remove template files
-        cwd: $WERCKER_ROOT/.
-        code: |
-          rm *.template.yaml
+        
     - script:
         name: debug
         cwd: $WERCKER_ROOT/.
@@ -57,21 +42,7 @@ kubernetes-deploy:
         name: echo deployment file
         code: | 
           cat ./backend-api-deployment.yaml
-# Comment this step if you have not created a secret manuallly / You are running the Wercker build for the first time 
-    - kubectl:
-        server: $KUBE_ENDPOINT
-        token: $KUBE_USER_TOKEN
-        insecure-skip-tls-verify: true
-        cwd: $WERCKER_ROOT/.
-        command: -n $K8SNAMESPACE delete secret $OCIR_SECRET_NAME
 
-    - kubectl:
-        server: $KUBE_ENDPOINT
-        token: $KUBE_USER_TOKEN
-        insecure-skip-tls-verify: true
-        cwd: $WERCKER_ROOT/.
-        command: -n $K8SNAMESPACE create secret docker-registry $OCIR_SECRET_NAME --docker-username=$PRIVATE_REGISTRY_USERNAME --docker-password='${API_USER_TOKEN}' --docker-email='vamsi.ramakrishnan@oracle.com' 
-     
     - kubectl:
         server: $KUBE_ENDPOINT
         token: $KUBE_USER_TOKEN
