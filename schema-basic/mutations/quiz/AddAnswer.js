@@ -3,7 +3,7 @@ import { answerReturnArray } from '../../helpers/returning';
 export default async function AddAnswer(args, context) {
 
     return await knex("QUIZANSWERSTABLE")
-        .returning(commentReturnArray)
+        .returning(answerReturnArray)
         .insert({
             QUESTION: args.questionID,
             LOGGEDINUSER: args.userID,
