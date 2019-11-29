@@ -34,7 +34,12 @@ import c_DeleteComment from "./mutations/Comments/DeleteComment";
 import EventRegistration from "./types/EventRegistration";
 import e_EventRegistration from './mutations/Events/RegisterEvent';
 import parseEventRegistration from './parsers/parseEventRegistration';
+
+
 import QuizAnswers from "./types/QuizAnswers";
+import q_AddAnswer from './mutations/quiz/AddAnswer';
+import parseAnswer from "./parsers/parseAnswer";
+
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {

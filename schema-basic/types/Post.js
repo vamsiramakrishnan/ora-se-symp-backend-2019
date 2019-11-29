@@ -9,6 +9,7 @@ import {
 import User from "./User";
 import Comment from "./Comment";
 import Hashtag from "./Hashtags";
+import Like from "./Like";
 
 export default new GraphQLObjectType({
   description: "A post from a user",
@@ -65,6 +66,20 @@ export default new GraphQLObjectType({
         CREATEDAT: "DESC"
       }
     },
+    likes: {
+      description: "The likes on this post",
+      type: new GraphQLList(Like),
+      sqlBatch: {
+        // which column to match up to the users
+        thisKey: "POSTID",
+        // the other column to compare to
+        parentKey: "ID"
+      },
+      where: likesTable => `${likesTable}.ISDELETED = 'N'`,
+      orderBy: {
+        CREATEDAT: "DESC"
+      }
+    },
     hashtags: {
       description: "The hashtags on this post",
       type: new GraphQLList(Hashtag),
@@ -84,6 +99,13 @@ export default new GraphQLObjectType({
       // use a correlated subquery in a raw SQL expression to do things like aggregation
       sqlExpr: postTable =>
         `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`
+    },
+    numLikes: {
+      description: "The number of comments on this post",
+      type: GraphQLInt,
+      // use a correlated subquery in a raw SQL expression to do things like aggregation
+      sqlExpr: postTable =>
+        `(SELECT COUNT(*) FROM LIKESTABLE WHERE POSTID = ${postTable}.ID AND ISDELETED = 'N')`
     },
     numHashtags: {
       description: "The number of comments on this post",

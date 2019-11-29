@@ -1,6 +1,6 @@
 import { answerReturnArray } from '../../helpers/returning';
 
-export default async function AddComment(args, context) {
+export default async function AddAnswer(args, context) {
 
     return await knex("QUIZANSWERSTABLE")
         .returning(commentReturnArray)

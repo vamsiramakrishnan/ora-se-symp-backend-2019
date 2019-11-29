@@ -12,6 +12,8 @@ import Comment from './Comment';
 import Event from './Event';
 import Hashtags from './Hashtags';
 import EventRegistration from './EventRegistration'
+import Like from './Like'
+
 
 const User = new GraphQLObjectType({
   description: 'An SE Symposium User',
@@ -91,6 +93,18 @@ const User = new GraphQLObjectType({
       where: table => `${table}.ISDELETED = 'N'`,
       orderBy: {
         CREATEDAT: 'DESC',
+      },
+    },
+    likes: {
+      description: 'List of Comments the user has written on Posts',
+      // another one-to-many relation
+      // only JOIN comments that are not archived
+      type: new GraphQLList(Like),
+      sqlJoin: (userTable, likesTable) =>
+        `${userTable}.ID = ${likesTable}.AUTHORID`,
+      where: table => `${table}.ISDELETED = 'N' `,
+      orderBy: {
+        MODIFIEDAT: 'DESC',
       },
     },
     comments: {
@@ -180,6 +194,12 @@ const User = new GraphQLObjectType({
       type: GraphQLInt,
       sqlExpr: userTable =>
         `(SELECT COUNT(*) FROM COMMENTSTABLE WHERE AUTHORID = ${userTable}.ID AND ISDELETED = 'N')`,
+    },
+    numLikesGiven: {
+      description: 'Number of Comments the user has Written on Posts',
+      type: GraphQLInt,
+      sqlExpr: userTable =>
+        `(SELECT COUNT(*) FROM LIKESTABLE WHERE AUTHORID = ${userTable}.ID AND ISDELETED = 'N')`,
     },
     hashtags: {
       description: ' List of Hashtags created by the User',
