@@ -184,13 +184,13 @@ export default new GraphQLObjectType({
     AddAnswer: {
       type: QuizAnswers,
       args: {
-        userID: { type: GraphQLString },
-        questionID: { type: GraphQLInt },
+        authorID: { type: GraphQLString },
+        question: { type: GraphQLInt },
         answer: { type: GraphQLString }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        const userInfo = await q_AddAnswer(args, context);
-        return await parseAnswer(userInfo[0]);
+        const answerInfo = await q_AddAnswer(args, context);
+        return await parseAnswer(answerInfo[0]);
       }
     },
   })
