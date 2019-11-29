@@ -34,6 +34,7 @@ import c_DeleteComment from "./mutations/Comments/DeleteComment";
 import EventRegistration from "./types/EventRegistration";
 import e_EventRegistration from './mutations/Events/RegisterEvent';
 import parseEventRegistration from './parsers/parseEventRegistration';
+import QuizAnswers from "./types/QuizAnswers";
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -173,6 +174,18 @@ export default new GraphQLObjectType({
       resolve: async (parent, args, context, resolveInfo) => {
         const postInfo = await e_EventRegistration(args, context);
         return await parseEventRegistration(postInfo[0]);
+      }
+    },
+    AddAnswer: {
+      type: QuizAnswers,
+      args: {
+        userID: { type: GraphQLString },
+        questionID: { type: GraphQLInt },
+        answer: { type: GraphQLString }
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        const userInfo = await q_AddAnswer(args, context);
+        return await parseAnswer(userInfo[0]);
       }
     },
   })
