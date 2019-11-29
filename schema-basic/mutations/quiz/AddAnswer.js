@@ -9,6 +9,6 @@ export default async function AddAnswer(args, context) {
             QUESTION: args.question,
             LOGGEDINUSER: args.authorID,
             ANSWER: args.answer,
-            ANSWERTIME: moment().format("DD-MMM-YYYY hh.mm.sss A")
+            ANSWERTIME: moment().format("DD-MMM-YYYY hh.mm.ss.SSS A")
         });
 }
