@@ -48,26 +48,26 @@ const User = new GraphQLObjectType({
     },
     location: {
       type: GraphQLString,
-      sqlColumn: 'USERMETADATA.LOCATION'
+      sqlColumn: 'USERMETADATA"."LOCATION'
     },
     token: {
       type: GraphQLString,
     },
     department: {
       type: GraphQLString,
-      sqlColumn: 'USERMETADATA.DEPARTMENT'
+      sqlColumn: 'USERMETADATA"."DEPARTMENT'
     },
     room: {
       type: GraphQLString,
-      sqlColumn: 'USERMETADATA.ROOM'
+      sqlColumn: 'USERMETADATA"."ROOM'
     },
     profilePic: {
       type: GraphQLString,
-      sqlColumn: 'USERMETADATA.PROFILEPIC'
+      sqlColumn: 'USERMETADATA"."PROFILEPIC'
     },
     bio: {
       type: GraphQLString,
-      sqlColumn: 'USERMETADATA.BIO'
+      sqlColumn: 'USERMETADATA"."BIO'
     },
     NumLogins: {
       type: GraphQLInt,

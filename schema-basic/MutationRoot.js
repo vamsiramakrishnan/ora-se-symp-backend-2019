@@ -87,6 +87,7 @@ export default new GraphQLObjectType({
         location: { type: GraphQLString },
         department: { type: GraphQLString },
         location: { type: GraphQLString },
+        profilePic: { type: GraphQLString },
         bio: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
