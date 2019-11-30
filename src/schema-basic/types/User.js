@@ -67,7 +67,7 @@ const User = new GraphQLObjectType({
     },
     bio: {
       type: GraphQLString,
-      sqlColumn: 'USERMETADATA"."BIO'
+      sqlColumn: 'BIO'
     },
     NumLogins: {
       type: GraphQLInt,
