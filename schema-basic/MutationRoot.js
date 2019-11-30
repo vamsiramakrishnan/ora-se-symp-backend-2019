@@ -28,6 +28,7 @@ import Comment from "./types/Comment";
 import c_AddComment from "./mutations/Comments/AddComment";
 import c_UpdateMetadata from "./mutations/Comments/AddComment";
 import c_DeleteComment from "./mutations/Comments/DeleteComment";
+import parseComment from "./parsers/parseComment";
 
 
 //Event Registration
@@ -85,7 +86,8 @@ export default new GraphQLObjectType({
         room: { type: GraphQLString },
         location: { type: GraphQLString },
         department: { type: GraphQLString },
-        location: { type: GraphQLString }
+        location: { type: GraphQLString },
+        bio: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const userInfo = await u_UpdateMetadata(args, context);
@@ -146,7 +148,8 @@ export default new GraphQLObjectType({
         commentImages: { type: GraphQLString }
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
-        return await c_AddComment(args, context);
+        const commentInfo = await c_AddComment(args, context);
+        return await parseComment(commentInfo[0]);
       })
     },
     UpdateComment: {
