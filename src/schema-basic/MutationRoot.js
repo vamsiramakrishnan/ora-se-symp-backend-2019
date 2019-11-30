@@ -30,13 +30,18 @@ import c_UpdateMetadata from "./mutations/Comments/AddComment";
 import c_DeleteComment from "./mutations/Comments/DeleteComment";
 import parseComment from "./parsers/parseComment";
 
+//Likes
+import Like from "./types/Like";
+import l_AddLike from "./mutations/Like/AddLike";
+import l_DeleteLike from "./mutations/Like/DeleteLike";
+import parseLike from "./parsers/parseLike";
 
 //Event Registration
 import EventRegistration from "./types/EventRegistration";
 import e_EventRegistration from './mutations/Events/RegisterEvent';
 import parseEventRegistration from './parsers/parseEventRegistration';
 
-
+//Answers 
 import QuizAnswers from "./types/QuizAnswers";
 import q_AddAnswer from './mutations/quiz/AddAnswer';
 import parseAnswer from "./parsers/parseAnswer";
@@ -195,6 +200,27 @@ export default new GraphQLObjectType({
       resolve: async (parent, args, context, resolveInfo) => {
         const answerInfo = await q_AddAnswer(args, context);
         return await parseAnswer(answerInfo[0]);
+      }
+    },
+    AddLike: {
+      type: Like,
+      args: {
+        authorID: { type: GraphQLString },
+        postID: { type: GraphQLString },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        const likeInfo = await l_AddLike(args, context);
+        return await parseLike(likeInfo[0]);
+      }
+    },
+    DeleteLike: {
+      type: Like,
+      args: {
+        likeID: { type: GraphQLString },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        const likeInfo = await l_DeleteLike(args, context);
+        return await parseLike(likeInfo[0]);
       }
     },
   })

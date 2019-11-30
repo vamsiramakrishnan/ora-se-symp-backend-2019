@@ -7,10 +7,10 @@ export default async function parseUser(args) {
     fullName: args.FIRSTNAME + " " + args.LASTNAME,
     userMetadata: args.USERMETADATA,
     room: JSON.parse(args.USERMETADATA).ROOM,
-    bio:JSON.parse(args.USERMETADATA).BIO,
     profilePic: JSON.parse(args.USERMETADATA).PROFILEPIC,
     location: JSON.parse(args.USERMETADATA).LOCATION,
     department: JSON.parse(args.USERMETADATA).DEPARTMENT,
+    bio: args.BIO,
     NumLogins: args.NUMLOGINS,
     createdAt: args.CREATEDAT,
     modifiedAt: args.MODIFIEDAT
