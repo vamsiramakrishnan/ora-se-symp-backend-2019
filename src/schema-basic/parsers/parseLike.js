@@ -4,7 +4,6 @@ export default async function parseLike(args) {
         postID: args.POSTID,
         authorID: args.AUTHORID,
         isDeleted: args.ISDELETED,
-        createdAt: args.CREATEDAT,
-        modifiedAt: args.MODIFIEDAT
+        createdAt: args.CREATEDAT
     };
 }

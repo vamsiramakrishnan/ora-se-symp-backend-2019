@@ -9,7 +9,6 @@ export default async function DeleteLike(args, context) {
         .returning(likeReturnArray)
         .where({ "ID": args.ID })
         .update({
-            ISDELETED: "Y",
-            MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
+            ISDELETED: "Y"
         });
 }

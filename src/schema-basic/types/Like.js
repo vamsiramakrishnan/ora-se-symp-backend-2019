@@ -35,6 +35,10 @@ export default new GraphQLObjectType({
       sqlJoin: (likesTable, userTable) =>
         `${likesTable}.AUTHORID = ${userTable}.ID`,
     },
+    authorID: {
+      type: GraphQLString,
+      sqlColumn: 'AUTHORID',
+    },
     postID: {
       type: GraphQLString,
       sqlColumn: 'POSTID',

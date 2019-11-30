@@ -11,7 +11,6 @@ export default async function AddLike(args, context) {
             AUTHORID: args.authorID,
             POSTID: args.postID,
             ISDELETED: "N",
-            CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
-            MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
+            CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
         }).returning(likesReturnArray);
 }
