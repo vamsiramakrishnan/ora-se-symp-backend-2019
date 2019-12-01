@@ -1,8 +1,9 @@
 
-import uuid from 'uuid'
+import uuid from 'uuid';
 import moment from 'moment';
-import knex from '../../helpers/database'
+import knex from '../../helpers/database';
 import { commentReturnArray } from '../../helpers/returning';
+import handleNulls from '../../helpers/handleNulls';
 
 export default async function AddComment(args, context) {
     return await knex("COMMENTSTABLE")
@@ -10,7 +11,7 @@ export default async function AddComment(args, context) {
             ID: uuid.v1(),
             AUTHORID: args.authorID,
             POSTID: args.postID,
-            COMMENTMETADATA: JSON.stringify({ COMMENTCONTENT: args.commentContent, COMMENTIMAGES: args.commentImages }),
+            COMMENTMETADATA: JSON.stringify({ COMMENTCONTENT: args.commentContent, COMMENTIMAGES: await handleNulls(args.commentImages) }),
             ISDELETED: "N",
             CREATEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A"),
             MODIFIEDAT: moment().format("DD-MMM-YYYY hh.mm.ss A")
