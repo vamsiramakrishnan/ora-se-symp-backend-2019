@@ -138,6 +138,7 @@ export default new GraphQLObjectType({
     },
     posts: {
       type: new GraphQLList(Post),
+      where: postTable => `${postTable}.ISDELETED = 'N'`,
       orderBy: {
         CREATEDAT: 'DESC'
       },
