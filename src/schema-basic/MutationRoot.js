@@ -22,6 +22,7 @@ import p_AddPost from "./mutations/Post/AddPost";
 import p_UdpateMetadata from "./mutations/Post/UpdateMetadata";
 import p_DeletePost from "./mutations/Post/DeletePost";
 import parsePost from "./parsers/parsePost";
+import AddHashtag from "./mutations/Hashtags/addHashtags";
 
 // Comments
 import Comment from "./types/Comment";
@@ -120,7 +121,9 @@ export default new GraphQLObjectType({
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_AddPost(args, context);
-        return await parsePost(postInfo[0]);
+        const parsedPost = await parsePost(postInfo[0]);
+        await AddHashtag(parsedPost);
+        return parsedPost
       })
     },
     UpdatePost: {

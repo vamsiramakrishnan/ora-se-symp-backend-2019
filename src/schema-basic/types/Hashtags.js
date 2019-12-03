@@ -21,6 +21,10 @@ export default new GraphQLObjectType({
       // SQL column assumed to be "id"
       type: GraphQLString
     },
+    postID: {
+      type: GraphQLString,
+      sqlColumn: "POSTID"
+    },
     post: {
       description: "Post that the Hashtag Belongs to",
       type: Post,
