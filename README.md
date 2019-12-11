@@ -108,31 +108,28 @@ GraphQL + Join Monster + ATP backend based on Nodejs for the Social network buil
 ### Role of Join Monster
 * Convert the GraphQL Query Dynamically to a SQL Query as and when the front end changes. 
 
-  +-----------------------+
-  | View | Interaction    |
-  |-----------------------|
-  |                       |
-  | User Centric View     |
-  |                       |
-  | Timeline of all Posts |
-  |                       |
-  | Expand Each Post      |
-  |                       |          +-----------------------+          +------------------------+
-  |    To See Comments    |          |  Resolve UI Request   |          | Convert to Dynamic SQL |
-  |                       |          |-----------------------|          |------------------------|
-  |    To See Likes       +----------|> Map to some DB Entity+----------|  Batch the Entities    |
-  |                       |          |                       |          |  Do Joins              |
-  |    See who commented  |          |  Understand relationships        |  Create Single SQL Query
-  |                       |          |                       |          | For any request        |
-  |    See who Liked      |          +-----------------------+          +------------------------+
-  |                       |
-  | UI , Easily Changing  |
-  |                       |
-  | Don't want to hardcode|
-  |                       |
-  |     SQL but be efficient
-  |                       |
-  +-----------------------+
+                   +------------------------+           +-------------------------+
+                   |Complex UI View Gen.    |           |Join - Monster           |
+                   |------------------------|           |-------------------------|
+                   |                        |           |                         |
+                   | Show me all the posts  |           | Map all entities involved
+                   |                        |           |                         |
+                   | Show me all comments   |           | Dynamically generate    |
+                   |                        |           |                         |
+                   | I want first name and  |           | a Single SQL Query for  |
+                   |                        |           |                         |
+                   | last name of people who+-----------|>every incoming request  |
+                   |                        |           |                         |
+                   | posted                 |           |                         |
+                   |                        |           | Cache when possible     |
+                   | Only the first name of |           |                         |
+                   |                        |           | Paginate for lazy loading
+                   | people who commented   |           |                         |
+                   |                        |           |                         |
+                   | I want number of comments          |                         |
+                   |                        |           |                         |
+                   | per post as well       |           |                         |
+                   +------------------------+           +-------------------------+
 
 ### Role of ATP 
 * Act as a highly scalable Social Network Persistence layer with autoscaling enabled, supporting both structured and unstructured data. 
