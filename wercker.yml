@@ -3,13 +3,14 @@ box:
   
 docker-build:
   steps:
+  
     - bash-template:
-      cwd: $WERCKER_ROOT/ora-se-symp-backend-2019/src/schema-basic/helpers/.
+        cwd: $WERCKER_ROOT/src/schema-basic/helpers/.
       
     - script: 
         name: debug 
         code: | 
-        cat $WERCKER_ROOT/src/schema-basic/helpers/database.js
+          cat $WERCKER_ROOT/src/schema-basic/helpers/database.js
       
     - internal/docker-build:
         dockerfile: Dockerfile
