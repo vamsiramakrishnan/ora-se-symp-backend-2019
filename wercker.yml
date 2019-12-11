@@ -8,7 +8,7 @@ docker-build:
         cwd: $WERCKER_ROOT/src/schema-basic/helpers/.
       
     - script: 
-        name: debug 
+        name: show templated file 
         code: | 
           cat $WERCKER_ROOT/src/schema-basic/helpers/database.js
       
