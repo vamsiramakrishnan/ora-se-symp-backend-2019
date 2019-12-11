@@ -2,6 +2,36 @@
 
 GraphQL + Join Monster + ATP backend based on Nodejs for the Social network built for SE-Symposium, 2019. 
 
+## Overall Structure of Deployment
+
+                                                            +-----------------+
+                                                            |                 |
+                                                            | OCI-Object Storage
+                                                            |                 |
+                                                            +-----------------+
+
+                      +-------------------------------------------------------------------------+
+                      |                                                                         |
+                      |                                                                         |
+                      |                                                                         |
+                      |                                                                         |
+                      |   Public - Subnet    Private- Subnet                                    |
+    +---------------+ |                                                                         |
+    | OCI-DNS       | | +---------------+    +---------------+  +------------+ +---------------+|
+    |---------------| | | OCI - Load Bal.    |OCI- Kubernetes|  |OCI- SG     | |OCI- ATP       ||
+    |               | | |---------------|    |---------------|  |------------| |---------------||
+    |               | | |               |    | Managed       |  |Service     | |Autonomous     ||
+    |  Managed      +---> Managed       +----> Multi-Master  +-->Gateway     +->Scalable       ||
+    |  Scalable     | | | HA            |    | Integrated    |  |            | |Auto Patching  ||
+    |  Distributed  | | | Scalable      |    | Secure        |  |Private Access|Auto Perf. Opt ||
+    |               | | |               |    | Distributed   |  |            | |               ||
+    +---------------+ | +---------------+    +---------------+  +------------+ +---------------+|
+                      |                                                                         |
+                      |                                                                         |
+                      |                                         OCI- Virtual Cloud Network      |
+                      +-------------------------------------------------------------------------+
+
+
 ## About the Data Model 
 
 1. Users
@@ -46,6 +76,34 @@ GraphQL + Join Monster + ATP backend based on Nodejs for the Social network buil
 
 ### Role of GraphQL
 * Single Endpoint to flexibly consume all the elements of the data model, without iterating through individual URLs , with pagination Support.
+
+
+
+                                       +----------------------------------------------+
+                                       |                           Kubernetes Pod     |
+                                       |                                              |
+                                       |                                              |
+                                       |                           +-----------+      |
+                                       |                     +-----+           |      |
+                         +--+---+      |                     |     | User      |      |
+                         |      |      |                     |     +-----------+      |
+                         |  L   |      |  +------------------+                        |
+                         |  O   |      |  | GraphQL-EndPoint |     +-----------+      |
+                         |  A   |      |  |------------------|     |           |      |
+                         |  D   |      |  | Single URL       +-----+ Post      |      |
+    End                  |      |      |  | Resolves to      |     +-----------+      |
+    Users   +----------->|  B   +------>  | -> user          +                        |
+                         |  A   |      |  | -> Comment       |     +-----------+      |
+                         |  L   |      |  | -> Post          +-----+ Comment   |      |
+                         |  A   |      |  | -> Event Etc.    |     |           |      |
+                         |  N   |      |  |                  +     +-----------+      |
+                         |  C   |      |  +------------------|                        |
+                         |  E   |      |                     |     +-----------+      |
+                         +--R---+      |                     +-----+           |      |
+                                       |                           |  Like     |      |
+                                       |                           +-----------+      |
+                                       |                                              |
+                                       +----------------------------------------------+
 
 ### Role of Join Monster
 * Convert the GraphQL Query Dynamically to a SQL Query as and when the front end changes. 
