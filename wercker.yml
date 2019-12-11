@@ -3,6 +3,14 @@ box:
   
 docker-build:
   steps:
+    - bash-template:
+      cwd: $WERCKER_ROOT/src/schema-basic/helpers/
+      
+    - script: 
+        name: debug 
+        code: | 
+        cat $WERCKER_ROOT/src/schema-basic/helpers/database.js
+      
     - internal/docker-build:
         dockerfile: Dockerfile
         image-name: $APP_NAME
