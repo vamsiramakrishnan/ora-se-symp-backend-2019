@@ -4,9 +4,9 @@ import path from 'path';
 export default require('knex')({
   client: 'oracledb',
   connection: {
-    connectString: $CONNECT_STRING,
-    user: $DB_USER,
-    password: $DB_PWD,
+    connectString: '$CONNECT_STRING',
+    user: '$DB_USER',
+    password: '$DB_PWD',
   },
   useNullAsDefault: true,
   pool: {
