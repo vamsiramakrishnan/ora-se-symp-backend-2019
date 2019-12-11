@@ -6,6 +6,11 @@ docker-build:
   
     - bash-template:
         cwd: $WERCKER_ROOT/src/schema-basic/helpers/.
+        
+    - script:
+        name: remove templated files
+        code: | 
+          rm -rf *.template
       
     - script: 
         name: show templated file 
