@@ -105,6 +105,8 @@ GraphQL + Join Monster + ATP backend based on Nodejs for the Social network buil
                                        |                                              |
                                        +----------------------------------------------+
 
+
+
 ### Role of Join Monster
 * Convert the GraphQL Query Dynamically to a SQL Query as and when the front end changes. 
 
