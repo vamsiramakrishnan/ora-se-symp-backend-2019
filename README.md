@@ -91,8 +91,8 @@ GraphQL + Join Monster + ATP backend based on Nodejs for the Social network buil
                          |  O   |      |  | GraphQL-EndPoint |     +-----------+      |
                          |  A   |      |  |------------------|     |           |      |
                          |  D   |      |  | Single URL       +-----+ Post      |      |
-    End                  |      |      |  | Resolves to      |     +-----------+      |
-    Users   +----------->|  B   +------>  | -> user          +                        |
+             End         |      |      |  | Resolves to      |     +-----------+      |
+             Users------>|  B   +------>  | -> user          +                        |
                          |  A   |      |  | -> Comment       |     +-----------+      |
                          |  L   |      |  | -> Post          +-----+ Comment   |      |
                          |  A   |      |  | -> Event Etc.    |     |           |      |
@@ -104,8 +104,6 @@ GraphQL + Join Monster + ATP backend based on Nodejs for the Social network buil
                                        |                           +-----------+      |
                                        |                                              |
                                        +----------------------------------------------+
-
-
 
 ### Role of Join Monster
 * Convert the GraphQL Query Dynamically to a SQL Query as and when the front end changes. 
