@@ -2,6 +2,46 @@
 
 GraphQL + Join Monster + ATP backend based on Nodejs for the Social network built for SE-Symposium, 2019. 
 
+## About the Data Model 
+
+1. Users
+2. Posts
+3. Likes
+4. Comments
+5. Events 
+6. Quizzes
+
+### An Example of viewing a subset of this model 
+                                   +-----------------+
+                                   | Likes Table     |
+                                   |-----------------|
+                           +-------> likeID          |
+                           |       | postID          |
+                           |       +-----------------+
+           +---------------+       +------------------+
+           |   Users table |       | Posts Table      |         + JSON Columns are Documents
+           |---------------|       |------------------|
+           | UserID        |       |  PostID          |           Documents are Standalone
+           | UserName      |       |  UserID          |
+           | UserMetadata(JSON)    |  PostMetadata(JSON)          Document Content Queryable
+           | Hash          +------>|  isDeleted       |
+           | CreatedAt     |       |  CreatedAt       |           SQL Dot Notation
+           | ModifiedAt    |       |  ModifiedAt      |
+           | numLogins     |       |                  |           Tables have Relationships
+           |               |       |                  |
+           +---------------+       +------------------+           Typical Social Media Graph
+                           |
+                           |       +------------------+           Not Suitable for REST
+                           |       | Comments Table   |
+                           |       |------------------|           View Generation has to be flexible
+                           |       |  CommentID       |
+                           +------->  PostID          |
+                                   |  UserID          |
+                                   |  CommentMetadata(JSON)
+                                   |  isDeleted       |
+                                   |  createdAt       |
+                                   +------------------+
+
 ## About Components 
 
 ### Role of GraphQL
