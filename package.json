@@ -1,7 +1,7 @@
 {
-  "name": "join-monster-demo",
+  "name": "sesymposium2019-backend",
   "version": "1.0.0",
-  "description": "A live demo of the Join Monster library.",
+  "description": "SE Symposium Backend on Autonomous Transaction Processing & Join Monster",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

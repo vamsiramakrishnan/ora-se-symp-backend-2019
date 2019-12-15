@@ -121,9 +121,7 @@ export default new GraphQLObjectType({
       },
       resolve: authenticated(async (parent, args, context, resolveInfo) => {
         const postInfo = await p_AddPost(args, context);
-        const parsedPost = await parsePost(postInfo[0]);
-        await AddHashtag(parsedPost);
-        return parsedPost
+        return await parsePost(postInfo[0]);
       })
     },
     UpdatePost: {
