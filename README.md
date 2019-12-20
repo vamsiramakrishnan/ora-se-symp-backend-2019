@@ -1,6 +1,7 @@
 # ora-se-symposium-back-end
 
 GraphQL + Join Monster + ATP backend based on Nodejs for the Social network built for SE-Symposium, 2019. 
+Change date: 20/12/2019
 
 ## Overall Structure of Deployment
 
