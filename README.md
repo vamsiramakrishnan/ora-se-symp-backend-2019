@@ -1,3 +1,5 @@
+[![wercker status](https://app.wercker.com/status/8637e310622f4ec3c9ef45b88db3fdca/m/master "wercker status")](https://app.wercker.com/project/byKey/8637e310622f4ec3c9ef45b88db3fdca)
+
 [![wercker status](https://app.wercker.com/status/8637e310622f4ec3c9ef45b88db3fdca/s/master "wercker status")](https://app.wercker.com/project/byKey/8637e310622f4ec3c9ef45b88db3fdca)
 
 # ora-se-symposium-back-end
