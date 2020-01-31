@@ -47,6 +47,10 @@ import QuizAnswers from "./types/QuizAnswers";
 import q_AddAnswer from './mutations/quiz/AddAnswer';
 import parseAnswer from "./parsers/parseAnswer";
 
+//Answers 
+import DBCabAnswers from "./types/DBCabAnswers";
+import q_AddDBCabAnswers from './mutations/DbCab/AddDBCabAnswers';
+import parseDBCabAnswers from "./parsers/parseDBCabAnswers";
 
 const authenticated = fn => (parent, args, context, info) => {
   if (context && context.user) {
@@ -222,6 +226,17 @@ export default new GraphQLObjectType({
       resolve: async (parent, args, context, resolveInfo) => {
         const likeInfo = await l_DeleteLike(args, context);
         return await parseLike(likeInfo[0]);
+      }
+    },
+    AddDBCabAnswer: {
+      type: DBCabAnswers,
+      args: {
+        question_id: { type: GraphQLInt },
+        answer: { type: GraphQLString }
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        const answerInfo = await q_AddDBCabAnswers(args, context);
+        return await parseDBCabAnswers(answerInfo[0]);
       }
     },
   })

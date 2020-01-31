@@ -5,3 +5,4 @@ export const hashtagsReturnArray = ["ID", "POSTID", "HASHTAG", "CREATEDAT", "MOD
 export const likesReturnArray = ["ID", "AUTHORID", "POSTID", "ISDELETED", "CREATEDAT"];
 export const eventReturnArray = ["ID", "DAYID", "REGISTEREEID", "EVENTID", "ISDELETED", "CREATEDAT", "MODIFIEDAT"];
 export const answerReturnArray = ["ID", "QUESTION", "LOGGEDINUSER", "ANSWER", "ANSWERTIME"];
+export const dbCabAnswerReturnArray = ["ID", "QUESTION_ID", "ANSWER"];
