@@ -49,7 +49,7 @@ import parseAnswer from "./parsers/parseAnswer";
 
 //Answers 
 import DBCabAnswers from "./types/DBCabAnswers";
-import q_AddDBCabAnswers from './mutations/DbCab/AddDBCabAnswers';
+import q_AddDBCabAnswers from './mutations/DBCab/AddDBCabAnswers';
 import parseDBCabAnswers from "./parsers/parseDBCabAnswers";
 
 const authenticated = fn => (parent, args, context, info) => {
