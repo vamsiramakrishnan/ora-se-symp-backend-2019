@@ -9,6 +9,8 @@ Change date: 27/12/2019
 
 ## Overall Structure of Deployment
 
+
+
                                                             +-----------------+
                                                             |                 |
                                                             | OCI-Object Storage
